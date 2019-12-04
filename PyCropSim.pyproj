@@ -1,0 +1,89 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>7c5deae6-9cf9-4fc8-bb35-68988e4d51af</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <StartupFile>PyCropSim.py</StartupFile>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <Name>PyCropSim</Name>
+    <RootNamespace>PyCropSim</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Configuration.py" />
+    <Compile Include="Data\Crop.py" />
+    <Compile Include="Data\GDD.py" />
+    <Compile Include="Data\Irrigation.py" />
+    <Compile Include="Data\SimControl.py" />
+    <Compile Include="Data\SoilData.py" />
+    <Compile Include="Data\SoilType.py" />
+    <Compile Include="Data\Summary.py" />
+    <Compile Include="Data\Tillage.py" />
+    <Compile Include="Data\WeatherDailyData.py" />
+    <Compile Include="Data\WeatherStation.py" />
+    <Compile Include="Data\__init__.py" />
+    <Compile Include="Errors\CustomError.py" />
+    <Compile Include="Errors\__init__.py" />
+    <Compile Include="Files\BlocFile.py" />
+    <Compile Include="Files\CropFile.py" />
+    <Compile Include="Files\DataFile.py" />
+    <Compile Include="Files\InitialFile.py" />
+    <Compile Include="Files\InputSummary.py" />
+    <Compile Include="Files\PrintOutFile.py" />
+    <Compile Include="Files\SimControlFile.py" />
+    <Compile Include="Files\SimFile.py" />
+    <Compile Include="Files\SoilFile.py" />
+    <Compile Include="Files\SoilPropFile.py" />
+    <Compile Include="Files\TillageFile.py" />
+    <Compile Include="Files\WeaFile.py" />
+    <Compile Include="Files\__init__.py" />
+    <Compile Include="Fortran.py" />
+    <Compile Include="HelperIO.py" />
+    <Compile Include="PyCropSim.py" />
+    <Compile Include="SIM.py" />
+    <Compile Include="Subroutines\CROPCO.py" />
+    <Compile Include="Subroutines\CROPSIM.py" />
+    <Compile Include="Subroutines\DAYS.py" />
+    <Compile Include="Subroutines\DEPLT.py" />
+    <Compile Include="Subroutines\EFPRECIP.py" />
+    <Compile Include="Subroutines\EVAP_MOD.py" />
+    <Compile Include="Subroutines\IRRIGA.py" />
+    <Compile Include="Subroutines\NTHET_MOD.py" />
+    <Compile Include="Subroutines\READWEAT.py" />
+    <Compile Include="Subroutines\ROOTZN_MOD.py" />
+    <Compile Include="Subroutines\SNOWMELT.py" />
+    <Compile Include="Subroutines\SOILTEMP.py" />
+    <Compile Include="Subroutines\YIELDS.py" />
+    <Compile Include="Subroutines\__init__.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Data\" />
+    <Folder Include="Errors\" />
+    <Folder Include="Files\" />
+    <Folder Include="Subroutines\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="default.cfg" />
+    <Content Include="pylintrc" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
+  <!-- Uncomment the CoreCompile target to enable the Build command in
+       Visual Studio and specify your pre- and post-build commands in
+       the BeforeBuild and AfterBuild targets below. -->
+  <!--<Target Name="CoreCompile" />-->
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+</Project>
