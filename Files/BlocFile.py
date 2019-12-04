@@ -6,8 +6,8 @@ from HelperIO import ReadNextInteger
 from HelperIO import ReadNextSequenceAsFloats
 from HelperIO import ReadNextSequenceAsInteger
 
-
 from Data.Crop import CropId
+
 
 class BlocFile:
     """Represents the data in the bloc file (BLOCFILE.DAT)"""

@@ -54,7 +54,7 @@ CurrentCrop: Crop = None
 
 Simulations = []
 
-#Variable Data
+# Variable Data
 
 IZONE: int = 0
 """The current zone for the simulation."""
@@ -72,8 +72,6 @@ LIVECROP: bool = False
 If LIVECROP = 0, starting with residue/fallow from wheat/other crops
 If LIVECROP = 1, starting year with growing wheat
 """
-
-
 
 # =====================================================
 # PER-LAYER DATA
@@ -112,7 +110,7 @@ Used by ComputeWaterDepletion() and __TranspirationRoutine() on DEPLT.
 RESIDUE: float = 0.0
 """Amount of residue on soil surface (in lb/acre)."""
 
-SOIL = 411 # A initial value to perform testing of .SIM files, which relies on this
+SOIL = 411  # A initial value to perform testing of .SIM files, which relies on this
 """The current soil code for the simulation."""
 
 TOTDEP = 0.0
@@ -128,7 +126,6 @@ EP, E1, E2 = 0.0, 0.0, 0.0
 TIME: float = 0.0
 TODAY: float = 0.0
 JNEXTI: float = 0.0
-
 
 JDAY: int = 0
 """Current Julian Day of the simulation."""
@@ -176,7 +173,6 @@ ETR = [0.0]
 CROPKC = [0.0]
 """Daily value of Crop Coefficient."""
 
-
 # DAILY DATA
 # =====================================================
 
@@ -186,7 +182,6 @@ CROPKC = [0.0]
 KSTG: int = 0
 """Growth stage index."""
 ICUT: int = 0
-
 
 SNIRR = 0.0
 """Seasonal net irrigation."""
@@ -200,7 +195,6 @@ TPS = []
 TDEF = []
 """Transpirational deficit during each stage."""
 
-
 # SEASONAL DATA
 # =====================================================
 
@@ -211,10 +205,9 @@ AWATER = 0.0
 GDD = 0.0
 """Current GDD in the simulation."""
 
-#Initialized on READWEAT
+# Initialized on READWEAT
 GDDS: list
 """Accumulated GDD"""
-
 
 # Yield used in lines:
 # 1119: PROGRAM: Assigned to 0.0 if ITFLAG > 0
@@ -238,13 +231,11 @@ RUNON = 0.0
 RUNOFF = 0.0
 """Depth of water that runs off, (in inches)"""
 
-
 # Soil related
 
 
 DINF = 0.0
 """The depth of water that infiltrated."""
-
 
 # =====================================================
 # Snow parameters
@@ -254,8 +245,8 @@ SNOH2O = 0.0
 """Amount of water in snow (in inches H20)"""
 
 # TONOTE: SNOFALL not is actually used, only assigned in one statement, never used.
-#SNOFALL = 0.0
-#"""Amount of water in snow on current day (in H₂O)."""
+# SNOFALL = 0.0
+# """Amount of water in snow on current day (in H₂O)."""
 # =====================================================
 
 TANUAL = 0.0
@@ -265,8 +256,7 @@ TAVG = 0.0
 RAIN = 0.0
 """Daily rain (in inches)"""
 
-
-ALPHA1 = 0.0 #in lines 137, 914, 934, 1477, 1478 (Move it to the SimFile (?))
+ALPHA1 = 0.0  # in lines 137, 914, 934, 1477, 1478 (Move it to the SimFile (?))
 
 CURVNO = 0.0
 """Curve Number from EFPRECIP"""
@@ -291,7 +281,6 @@ DPLN = 0.0
 AWDPLN = 0.0
 """Allowable depletion."""
 
-
 MON = [MonthlyData()]
 """Monthly data array."""
 WEEK = [WeeklyData()]
@@ -308,7 +297,6 @@ DRAINS = 0.0
 
 RZD = 0.0
 ETS = 0.0
-
 
 FDIRRIG = []
 """2-dimensional array for storing historical data."""
@@ -330,6 +318,7 @@ monthFile = None
 precipFile = None
 profileFile = None
 
+
 def openMonFile():
     """Returns the path to the monthly summary output file."""
     global monthFile
@@ -338,15 +327,15 @@ def openMonFile():
     if Config.OUTPUT_FORMAT == OutputFormats.REPRIVER:
         dirPath = os.path.join(Config.OUTDIR)
         if not os.path.isdir(dirPath): os.makedirs(dirPath, exist_ok=True)
-        monthFilename = os.path.join(dirPath, \
-            f"{Control.WSITE}{CurrentCrop.YR}{Soil.ISCODE}_MON.TXT")
+        monthFilename = os.path.join(dirPath, f"{Control.WSITE}{CurrentCrop.YR}{Soil.ISCODE}_MON.TXT")
     # Defaulting to COHYST
-    #if Config.OutputFormat == OutputFormats.COHYST:
+    # if Config.OutputFormat == OutputFormats.COHYST:
     dirPath = os.path.join(Config.OUTDIR, "Mon")
     if not os.path.isdir(dirPath): os.makedirs(dirPath, exist_ok=True)
     monthFilename = os.path.join(dirPath, f"{Control.WSITE}_MON.TXT")
     monthFile = open(monthFilename, "at")
     return monthFilename
+
 
 def openYearFile():
     """Returns the path to the monthly summary output file."""
@@ -358,6 +347,7 @@ def openYearFile():
     yearFile = open(yearFilename, "wt")
     return yearFilename
 
+
 def openPrecipFile():
     """Returns the path to the precipitation output file."""
     global precipFile
@@ -368,6 +358,7 @@ def openPrecipFile():
     precipFile = open(precipFilename, "at")
     return precipFilename
 
+
 def openOutFile():
     """Opens the OUT file for appending."""
     global outFile
@@ -375,12 +366,14 @@ def openOutFile():
     filename = os.path.join(Config.OUTDIR, f"{Control.WSITE}_OUT.TXT")
     outFile = open(filename, "at")
 
+
 def openProfileFile():
     """Opens the PROFILE file for appending."""
     global profileFile
 
     filename = os.path.join(Config.OUTDIR, "PROFILE.TXT")
     profileFile = open(filename, "at")
+
 
 def closeFiles():
     """Closes the output files."""
@@ -402,6 +395,7 @@ def closeFiles():
         profileFile.close()
         profileFile = None
 
+
 def writeInitialFile(filename, newLine="\n"):
     """Writes the data in the structure to the file specified."""
     file = open(filename, "wt")
@@ -419,10 +413,11 @@ def writeInitialFile(filename, newLine="\n"):
 
     file.close()
 
+
 def writeYearRow():
     """Writes the current year row to output YR file."""
     cropName = Sim.CROP.getName(Config.LEGACY)
-    
+
     IRR = Sim.Irrigation
     line: str = None
     TOTROF: float = 0.0
@@ -440,7 +435,7 @@ def writeYearRow():
     else:
         # Perform wheat/fallow rotation (?)
         if LIVECROP and Sim.CROP == CropId.WinterWheat and Sim.ITFLAG != 3 and \
-            Sim.Irrigation.IRRTYP == IrrigationTypes.DryLand:
+                Sim.Irrigation.IRRTYP == IrrigationTypes.DryLand:
             Sim.CROP = CropId.SummerFallow
         ITFLAG = Sim.ITFLAG
         IRRTYP = IRR.IRRTYP
@@ -456,7 +451,7 @@ def writeYearRow():
         print(line)
 
         if LIVECROP and Sim.CROP == CropId.SummerFallow and Sim.ITFLAG != 3 and \
-            Sim.Irrigation.IRRTYP == IrrigationTypes.DryLand:
+                Sim.Irrigation.IRRTYP == IrrigationTypes.DryLand:
             Sim.CROP = CropId.WinterWheat
 
     yearFile.write(line)

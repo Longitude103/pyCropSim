@@ -4,9 +4,9 @@
 # It's called once at DEPL if there's some snow or precipitation.
 # I's called just before EFPRECIP
 
-#==================================================================
+# ==================================================================
 # INPUT
-#==================================================================
+# ==================================================================
 # JDAY
 # TIMP
 # TAVG
@@ -17,17 +17,17 @@
 # SNOCOV1
 # SNOCOV2
 # SNOCOVMX
-#==================================================================
+# ==================================================================
 # I/O
-#==================================================================
+# ==================================================================
 # SNOTMP
 # SNOH20
 # RAIN
-#==================================================================
+# ==================================================================
 # OUTPUT
-#==================================================================
+# ==================================================================
 # SNOMLT
-#==================================================================
+# ==================================================================
 
 from math import sin
 from math import exp
@@ -56,13 +56,12 @@ def SNOWMELT(JDAY: int):
         # SIM.SNOFALL = SIM.RAIN
         SIM.RAIN = 0.0
 
-
     # Adjust melt factor for time of year
     IJDAY: int = JDAY - 1
     if SIM.SNOH2O > 0.0 and SIM.TMAX[IJDAY] > SMTMP:
         SMFMX: float = SIM.BLOC.SMFMX
         SMFMN: float = SIM.BLOC.SMFMN
-        SMFAC: float = (SMFMX + SMFMN) / 2.0 + sin((JDAY - 81)/58.09) * (SMFMX - SMFMN) / 2.0
+        SMFAC: float = (SMFMX + SMFMN) / 2.0 + sin((JDAY - 81) / 58.09) * (SMFMX - SMFMN) / 2.0
         SNOMLT: float = SMFAC * (((SIM.SNOTMP + SIM.TMAX[IJDAY]) / 2.0) - SMTMP)
         # SNOMLT: Amount of water in snow melt (in H₂O).
         # Adjust for areal extent of snow cover

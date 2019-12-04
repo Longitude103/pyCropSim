@@ -3,6 +3,7 @@
 import io
 from hashlib import md5
 
+
 def ReadNextWord(file, skipLines=0, delimiters=(" ", "\r", "\n")) -> str:
     """Reads the file until the next white-space and returns the read string."""
     buffer: str = ""
@@ -18,6 +19,7 @@ def ReadNextWord(file, skipLines=0, delimiters=(" ", "\r", "\n")) -> str:
                 return buffer
         else:
             buffer += c
+
 
 def ReadNextNumberSequence(file, includeText=False):
     """Reads the file until the next letter and returns and array of strings."""
@@ -41,6 +43,7 @@ def ReadNextNumberSequence(file, includeText=False):
         else:
             buffer += c
 
+
 def ReadNextSequenceAsInteger(file, delimiters=(" ", "\r", "\n", "\t")):
     """Reads the file until the next letter and returns and array of integers."""
     ret = []
@@ -60,6 +63,7 @@ def ReadNextSequenceAsInteger(file, delimiters=(" ", "\r", "\n", "\t")):
                 buffer = ""
         else:
             buffer += c
+
 
 def ReadFloats(file, count):
     """Reads the specified amount of floats from the file and returns and array."""
@@ -99,9 +103,11 @@ def ReadNextSequenceAsFloats(file):
         else:
             buffer += c
 
+
 def ReadIntegersInLine(file):
     """Reads the integers found in the next file line."""
     return ReadNextSequenceAsInteger(io.StringIO(file.readline()))
+
 
 def ReadWholeFile(file):
     """Reads the whole file using the ReadNextNumberSequence method."""
@@ -115,6 +121,7 @@ def ReadWholeFile(file):
 
     print("File Read Completed")
 
+
 def ReadNextFloat(file, skipLines=0) -> float:
     """Reads the file until the next invalid char and returns a float."""
     return float(ReadNextWord(file, skipLines))
@@ -122,7 +129,7 @@ def ReadNextFloat(file, skipLines=0) -> float:
 
 def ReadNextInteger(file, skipLines=0, delimiters=(" ", "\r", "\n")) -> int:
     """Reads the file until the next invalid char and returns an integer."""
-    #return int(ReadNextWord(file, skipLines, delimiters))
+    # return int(ReadNextWord(file, skipLines, delimiters))
     buffer = ""
     while True:
         c = file.read(1)
@@ -143,6 +150,7 @@ def ReadFloatArray(file, count, skipLines: int = 0):
     SkipLines(file, skipLines)
     return ret
 
+
 def SplitChars(line, *lens, start: int = 0):
     """Splits the line into segments of the specified lenghts."""
     ret = []
@@ -156,9 +164,11 @@ def SplitChars(line, *lens, start: int = 0):
         start = end
     return ret
 
+
 def SkipLine(file):
     """Skips one line from the file."""
     file.readline()
+
 
 def SkipLines(file, count):
     """Skips the specified lines from the file."""
@@ -170,6 +180,7 @@ def SkipLines(file, count):
     #print("Skipped: " + temp)
     return temp.strip()
 
+
 def checksum(fname):
     """Returns the MD5 hash for the specified file."""
     hash_md5 = md5()
@@ -177,6 +188,7 @@ def checksum(fname):
         for chunk in iter(lambda: f.read(4096), b""):
             hash_md5.update(chunk)
     return hash_md5.hexdigest()
+
 
 def compareFiles(one, other):
     """Compares the specified files with a MD5 checksum."""

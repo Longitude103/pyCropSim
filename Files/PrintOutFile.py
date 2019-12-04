@@ -4,6 +4,7 @@ from aenum import IntEnum
 
 from HelperIO import ReadNextSequenceAsInteger
 
+
 class PrintOutFlags(IntEnum):
     """PrintOut Flags"""
     NoDetails = 0
@@ -11,6 +12,7 @@ class PrintOutFlags(IntEnum):
     AnnualAndDailySummaries = 2
     AnnualDailyMonthlySummaries = 3
     AllAndInputSummary = 4
+
 
 class PrintOutFile:
     """PrintOut configuration file data."""

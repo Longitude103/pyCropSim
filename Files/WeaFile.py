@@ -9,6 +9,7 @@ from HelperIO import  ReadNextFloat
 from Data.WeatherStation import WeatherStation
 from Data.WeatherDailyData import WeatherDailyData
 
+
 class WeaFile:
     """Class for reading a .WEA file."""
     __file: TextIOWrapper = None

@@ -32,11 +32,13 @@ import SIM
 
 # TONOTE: Very weird that the arguments to RDIST were named like that instead of Z1,Z2
 
+
 def RDIST(Z2: float, Z1: float) -> float:
     """Root distribution function."""
     #return 2.0633 * (Z2 - Z1) - 1.622 * (Z2*Z2 - Z1*Z1) + 0.5587 * (Z2**3.0 - Z1**3.0)
     # TONOTE: Changed the exponentation function with integers to try to match Fortran results.
     return 2.0633 * (Z2 - Z1) - 1.622 * (Z2*Z2 - Z1*Z1) + 0.5587 * (Z2*Z2*Z2 - Z1*Z1*Z1)
+
 
 def ROOTZN():
     """Implements the ROOTZN subroutine."""

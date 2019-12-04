@@ -4,6 +4,7 @@ import os
 from Data.Crop import Crop
 from Files.DataFile import DataFile
 
+
 class CropFile(DataFile):
     """Defines the contents in a crop file. CROPFILE"""
 

@@ -27,9 +27,11 @@ EXP2InFortran = 7.3890560989306504069418224389664829
 #define M_SQRT2q        1.4142135623730950488016887242096981Q  /* sqrt(2) */
 #define M_SQRT1_2q        0.7071067811865475244008443621048490Q  /* 1/sqrt(2) */
 
+
 def AMOD(A: float, P: float) -> float:
     """Computes the remainder of the division of A by P."""
     return A - (INT(A / P) * P)
+
 
 def INT(A: float) -> int:
     """Convert to integer type"""

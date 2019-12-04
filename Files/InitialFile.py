@@ -6,6 +6,7 @@ from HelperIO import ReadFloats
 from HelperIO import ReadNextFloat
 from HelperIO import ReadNextInteger
 
+
 class InitialFile:
     """Represents the contents of the INITIAL FILE"""
     __slots__ = ("THETA", "CROP", "RESIDUE", "LIVECROP", "SNOTMP", "SNOH2O", "SOILT")

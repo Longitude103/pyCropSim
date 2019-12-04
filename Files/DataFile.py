@@ -5,6 +5,7 @@ from io import TextIOWrapper
 from abc import ABC, abstractmethod
 from aenum import IntEnum
 
+
 class OutputFormats(IntEnum):
     """The different output formats available."""
     Undefined = 0
@@ -12,6 +13,7 @@ class OutputFormats(IntEnum):
     COHYST = 1
     # Republican River (original v7 format)
     REPRIVER = 2
+
 
 class DataRow(ABC):
     """Abstract base class for output rows."""

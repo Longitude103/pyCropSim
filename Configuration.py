@@ -1,28 +1,29 @@
 """Defines and loads the program configuration."""
 
-import os, sys, getopt
+import getopt
+import os
+import sys
 from datetime import datetime
 
 import SIM
-
-from Files.SoilFile import SoilFile
 from Files.BlocFile import BlocFile
 from Files.CropFile import CropFile
-from Files.InitialFile import InitialFile
-from Files.TillageFile import TillageFile
-from Files.PrintOutFile import PrintOutFile
-from Files.SoilPropFile import SoilPropFile
-from Files.SimControlFile import SimControlFile
-
 from Files.DataFile import OutputFormats
+from Files.InitialFile import InitialFile
+from Files.PrintOutFile import PrintOutFile
+from Files.SimControlFile import SimControlFile
+from Files.SoilFile import SoilFile
+from Files.SoilPropFile import SoilPropFile
+from Files.TillageFile import TillageFile
 
 DefaultConfigPath: str = "default.cfg"
 
+
 class Configuration:
     """Configuration class"""
-    __slots__ = ("Version", "INPUTDIR", "OUTDIR", "OUTPUT_FORMAT", "BLOCFILE", "TILLFILE", \
-       "PRTFILE", "CNTRFILE", "CROPFILE", "SOILFILE", "INITFILE", "SOILPROPFILE", "WEA_DIR", \
-      "ZONES", "ZONES_DIR", "LEGACY", "PRINT_ALL_SOILS", "SINGLE_RUN")
+    __slots__ = ("Version", "INPUTDIR", "OUTDIR", "OUTPUT_FORMAT", "BLOCFILE", "TILLFILE",
+                 "PRTFILE", "CNTRFILE", "CROPFILE", "SOILFILE", "INITFILE", "SOILPROPFILE", "WEA_DIR",
+                 "ZONES", "ZONES_DIR", "LEGACY", "PRINT_ALL_SOILS", "SINGLE_RUN")
 
     def __init__(self):
         # Initialize default values.
@@ -51,7 +52,6 @@ class Configuration:
         self.WEA_DIR: str = "CSModel/Wea"
         self.ZONES: list = [1, 2, 3, 4, 5]
         self.ZONES_DIR: str = "CSModel/Sim/98/Zone"
-
 
         print(f"Cropsim v{self.Version}")
         try:
@@ -96,10 +96,10 @@ class Configuration:
             if len(line) > 0 and line[0].isalpha():
                 try:
                     idx = line.index("=")
-                    self.___parseConfigSetting(line[:idx].strip(), line[idx+1:].strip())
+                    self.___parseConfigSetting(line[:idx].strip(), line[idx + 1:].strip())
                 except ValueError:
                     pass
-                
+
         file.close()
 
     def ___parseConfigSetting(self, name: str, value: str):
@@ -111,7 +111,7 @@ class Configuration:
             else:
                 if name == "ZONES":
                     self.ZONES = list(map(int, value.split(",")))
-                elif name == "OUTPUT_FORMAT": 
+                elif name == "OUTPUT_FORMAT":
                     try:
                         self.OUTPUT_FORMAT = OutputFormats(int(value))
                     except ValueError:
@@ -136,8 +136,8 @@ class Configuration:
     def __readGlobalData__(self):
         """Reads global data for the simulation."""
 
-        #SIM.InitialData = InitialFile(os.path.join(self.INPUTDIR, \
-        #os.path.normpath(self.INITFILE)))
+        # SIM.InitialData = InitialFile(os.path.join(self.INPUTDIR, \
+        # os.path.normpath(self.INITFILE)))
         SIM.InitialData = InitialFile()
         # Read BlocFile
         SIM.BLOC = BlocFile(os.path.join(self.INPUTDIR, os.path.normpath(self.BLOCFILE)))
@@ -148,22 +148,20 @@ class Configuration:
         # Load soils for site data.
         SIM.Sites = SoilFile(os.path.join(self.INPUTDIR, os.path.normpath(self.SOILFILE))).Data
         # Read soil properties file
-        SIM.SoilProps = SoilPropFile(os.path.join(self.INPUTDIR, \
-            os.path.normpath(self.SOILPROPFILE))).SoilTypes
+        SIM.SoilProps = SoilPropFile(os.path.join(self.INPUTDIR,
+                                                  os.path.normpath(self.SOILPROPFILE))).SoilTypes
         # Read Simulation Control file
-        SIM.Simulations = SimControlFile(os.path.join(self.INPUTDIR, \
-            os.path.normpath(self.CNTRFILE))).Rows
+        SIM.Simulations = SimControlFile(os.path.join(self.INPUTDIR, os.path.normpath(self.CNTRFILE))).Rows
 
         print("Global Data read.")
 
     def checkOutputPath(self):
         """Creates a timestamped output folder."""
         now = datetime.now()
-        self.OUTDIR = os.path.normpath(os.path.join(self.OUTDIR, \
-            (f"{now.year}{now.month:0>2}{now.day:0>2} "
-             f"{now.hour:0>2}{now.minute:0>2}{now.second:0>2}")))
+        self.OUTDIR = os.path.normpath(os.path.join(self.OUTDIR,
+                                                    (f"{now.year}{now.month:0>2}{now.day:0>2} "
+                                                     f"{now.hour:0>2}{now.minute:0>2}{now.second:0>2}")))
         os.makedirs(self.OUTDIR, exist_ok=True)
-
 
     def PrintUsage(self):
         """Prints information about the accepted command-line parameters."""

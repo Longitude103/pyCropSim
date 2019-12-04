@@ -5,6 +5,7 @@ import os
 from Files.DataFile import DataFile
 from Data.SimControl import SimControl
 
+
 class SimControlFile(DataFile):
     """Represents the data in the Simulation Control file (CNTRFILE)"""
 

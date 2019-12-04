@@ -3,6 +3,7 @@
 from HelperIO import ReadNextNumberSequence
 from Data.Tillage import Tillage
 
+
 class TillageFile:
     """Represents the data in the tillage file (TILLFILE)"""
 

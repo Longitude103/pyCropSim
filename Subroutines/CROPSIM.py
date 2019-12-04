@@ -30,6 +30,7 @@ def initSimulation(sim: SimControl):
     SIM.Site = SIM.Sites[sim.WSITE]
     return SIM.Site
 
+
 def initSoilSimulation(soilKey: int, soilIndex: int):
     """Init simulation for the specified soil."""
     
@@ -56,7 +57,6 @@ def initCropSimulation(crop: Crop):
     SIM.LASTSIMF, SIM.LASTYR = crop.SIMFILE, crop.YR
 
 
-
 def loadSimulationFiles():
     """Loads the .WEA and .SIM for the current simulation."""
     
@@ -81,6 +81,7 @@ def loadSimulationFiles():
 
     # @ 1079
     openOutputFiles()
+
 
 def performSimulation():
     """Performs the simulation."""
@@ -122,6 +123,7 @@ def loadSimFile(file: SimFile):
         SIM.RZMAX *= rzFact
         SIM.RZMGMT *= rzFact
 
+
 def initSoilData():
     """Initialize soil data."""
 
@@ -150,6 +152,7 @@ def initSoilData():
         SIM.TOTDEP += DEPTH
 
     # @922
+
 
 def setInitialConditions():
     """Sets the initial simulation conditions."""
@@ -200,6 +203,7 @@ def setInitialConditions():
     SIM.JDYPLT = DAYOFYR(SIM.Sim.IMPLT, SIM.Sim.IDPLT)
     print(f"Simulating from DAY {SIM.JDYBG} to {SIM.JDYEND}")
 
+
 def initTillageDaysWithBranches():
     """CONVERT TILLAGE DAYS TO THE DAY OF THE YEAR RATHER THAN
     THE DAYS BEFORE PLANTING, AFTER PLANTING OR AFTER MATURITY."""
@@ -222,6 +226,7 @@ def initTillageDaysWithBranches():
             elif till.ITILTM == 3: till.TILDAY += SIM.JDYMAT
         # TODO: Check if the values in Sim are actually changed without re-assigment
         SIM.Sim.TillageOperations[i] = till
+
 
 def openOutputFiles():
     """Open output files."""
@@ -248,6 +253,7 @@ def openOutputFiles():
                     f"TILL CODE: {SIM.Sim.ITFLAG:>3}     HYDROGROUP: {IHYGRP:>2}\n{'*'*159}\n"
                     ))
 
+
 def loadInitialData():
     """Writes the initial data to the simulation shared space."""
     SIM.THETA = SIM.InitialData.THETA[:]
@@ -259,6 +265,7 @@ def loadInitialData():
     SIM.SNOH2O = SIM.InitialData.SNOH2O
 
     SIM.SOILT = SIM.InitialData.SOILT[:]
+
 
 def rewriteInitFile():
     """Rewrites the INITFILE."""

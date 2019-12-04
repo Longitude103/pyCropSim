@@ -11,6 +11,7 @@ IMMAT, IDMAT = 0, 0
 
 ITYPE = ('DRYLAND', 'HISTORIC.', 'C. PIVOT', 'FURROWS', 'BORDER/C')
 
+
 def PrintInputSummary():
     """Prints the input summary."""
     global IMEFC, IDEFC, IMMAT, IDMAT
@@ -39,6 +40,7 @@ def PrintInputSummary():
 
     PrintSimulationParameters()
 
+
 def PrintSeasonalResults():
     """Prints seasonal results."""
 
@@ -57,6 +59,7 @@ def PrintSeasonalResults():
         f" DATE OF MATURITY{' '*18}{IMMAT:>3}{IDMAT:>3}\n"
         ))
 
+
 def PrintCuttingDatesForHaySimulations():
     """Prints cutting dates for hay simulations"""
     # Label 496. @1249~1252
@@ -72,6 +75,7 @@ def PrintCuttingDatesForHaySimulations():
         f" DATE OF MATURITY{' '*18}{IMMAT:>3}{IDMAT:>3}\n"
         ))
 
+
 def PrintCuttingDatesAndSeasonalResultsForAlfalfaSimulations():
     """Prints Cutting Dates And Seasonal Results For Alfalfa Simulations"""
     IMON, IDAY = CALDAY(SIM.JDYPLT)
@@ -81,6 +85,7 @@ def PrintCuttingDatesAndSeasonalResultsForAlfalfaSimulations():
     for i in range(5):
         IMON, IDAY = CALDAY(SIM.Sim.JDYCUT[i])
         SIM.outFile.write(f" DATE OF CUTTING NO.       {i:>3}{' '*9}{IMON:>3}{IDAY:>3}\n")
+
 
 def PrintSimulationParameters():
     """Prints the simulation parameters."""
@@ -157,11 +162,13 @@ def PrintSimulationParameters():
     SIM.outFile.write(thetas)
     SIM.outFile.write(f"\n\n{' '*20}TOTAL PROFILE DEPLETION, INCHES = {DPLN:>6.1f}\n")
 
+
 def writeArray5F52(header: str, array: list):
     """Writes 5 float elements formatted as 5.2f"""
     SIM.outFile.write(header)
     for i in range(5):
         SIM.outFile.write(f"{array[i]:>5.2f}")
+
 
 def PrintDeficitsAndYields():
     """Prints deficits and yields."""
