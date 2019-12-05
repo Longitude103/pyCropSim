@@ -55,7 +55,6 @@ for sim in SIM.Simulations:
             break
         soilIndex += 1
 
-    
     if SIM.Config.SINGLE_RUN: break
 
 print("CropSim terminated successfully.")

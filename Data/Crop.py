@@ -31,6 +31,7 @@ Codes = ("SGRA", "BEAN", "SOYB", "POTA",
 Suffixes = ("DRCT", "IRCT", "PAST")
 """Suffixes found for .WEA files."""
 
+
 class CropId(IntEnum):
     """Enumeration of the crop types."""
     Undefined = -1
@@ -92,6 +93,7 @@ class CropId(IntEnum):
     def getName(self, legacy: bool = False) -> str:
         """Returns the crop names for compliant reports."""
         return LegacyNames[self - 1] if legacy else OutputNames[self - 1]
+
 
 class Crop(DataRow):
     """Simulation info for a crop type."""

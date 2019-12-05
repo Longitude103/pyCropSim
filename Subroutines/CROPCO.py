@@ -5,9 +5,9 @@
 
 # TONOTE: Fully revised module.
 
-#=================================================================
+# =================================================================
 # INPUT DATA                                    REQUIRED FOR CROPS
-#=================================================================
+# =================================================================
 
 # CROP:             The crop type
 # JDAY:             Current Julian Day of the simulation.   ALL
@@ -21,10 +21,10 @@
 # STATIC==========================================================
 # CC                Crop Coefficients.                  <=7 and 10
 # KCL, KCU          Lower and Upper limits to KC            ALL
-#=================================================================
+# =================================================================
 # OUTPUT
 # KC:
-#=================================================================
+# =================================================================
 
 import SIM
 # SIM is the module which holds global data accessed an modified
@@ -68,10 +68,14 @@ def CROPCO():
     # or as an Enumeration (easier to understand the new code).
     # Which do you prefer ?
     CROP = SIM.Sim.CROP
-    if CROP <= 7: __CROPCO7()
-    elif CROP == CropId.Corn: __CROPCO8()
-    elif CROP == CropId.Alfalfa: __CROPCO10()
-    elif CROP == CropId.IrrigatedHay: __CROPCO11()
+    if CROP <= 7:
+        __CROPCO7()
+    elif CROP == CropId.Corn:
+        __CROPCO8()
+    elif CROP == CropId.Alfalfa:
+        __CROPCO10()
+    elif CROP == CropId.IrrigatedHay:
+        __CROPCO11()
     else:
         cc = FSKC[CROP]
         __CROPCO(cc[0], cc[1], cc[2], cc[3], cc[4], cc[5])
@@ -81,26 +85,32 @@ def CROPCO():
     # TONOTE: if SIM.JDAY > SIM.JDYFRZ is True, the performed computation is useless.
     if SIM.JDAY > SIM.JDYFRZ or SIM.KC < SIM.BLOC.KCL[ICROP]:
         SIM.KC = SIM.BLOC.KCL[ICROP]
-    if SIM.KC > SIM.BLOC.KCU[ICROP]: SIM.KC = SIM.BLOC.KCU[ICROP]
+    if SIM.KC > SIM.BLOC.KCU[ICROP]:
+        SIM.KC = SIM.BLOC.KCU[ICROP]
+
 
 def __CROPCO(FS1: float, FS2: float, FS3: float, KCINI: float, KCMID: float, KCEND: float):
     __CROPCO_FGS(SIM.GDD / SIM.Sim.GDD.MAT, FS1, FS2, FS3, KCINI, KCMID, KCEND)
 
-def __CROPCO_FGS(FGS: float, FS1: float, FS2: float, FS3: float,\
-   KCINI: float, KCMID: float, KCEND: float):
+
+def __CROPCO_FGS(FGS: float, FS1: float, FS2: float, FS3: float,
+                 KCINI: float, KCMID: float, KCEND: float):
     """Adjust Kc based on FGS"""
     assert FS1 < FS2 < FS3
     # TONOTE: In some cases, KCEND > KCMID and even > KCINI (WHY ?)
-    #assert(KCINI < KCMID < KCEND)
+    # assert(KCINI < KCMID < KCEND)
 
-    if FGS > 1.0 or FGS <= FS1: SIM.KC = KCINI
-    elif FGS > FS1 and FGS < FS2:
+    if FGS > 1.0 or FGS <= FS1:
+        SIM.KC = KCINI
+    elif FS1 < FGS < FS2:
         SIM.KC = KCINI + (KCMID-KCINI) * (FGS-FS1) / (FS2-FS1)
-    elif FGS >= FS2 and FGS <= FS3: SIM.KC = KCMID
-    elif FGS > FS3 and FGS <= 1.0:
+    elif FS2 <= FGS <= FS3:
+        SIM.KC = KCMID
+    elif FS3 < FGS <= 1.0:
         SIM.KC = KCMID - (KCMID-KCEND) * (FGS-FS3) / (1.0-FS3)
     # TONOTE: Maybe missing a condition in which KC takes the KCEND value ?
     # Maybe this should happen when FGS > 1.0 ?
+
 
 def __CROPCO7():
     """Compute Daily Crop Coefficient for Spring Grains, Edible Beans, Soybeans,
@@ -113,9 +123,10 @@ def __CROPCO7():
     # IEFC: Index to growing stage.
     if SIM.JDAY > SIM.JDYEFC:
         IEFC = 1
-        PCT = float(SIM.JDAY-SIM.JDYEFC)/100.0
+        PCT = float(SIM.JDAY - SIM.JDYEFC) / 100.0
     else:
-        PCT = float(SIM.JDAY-SIM.JDYPLT)/float(SIM.JDYEFC-SIM.JDYPLT)
+        IEFC = 0
+        PCT = float(SIM.JDAY - SIM.JDYPLT) / float(SIM.JDYEFC - SIM.JDYPLT)
 
     CROP = SIM.Sim.CROP
     ICROP = SIM.Sim.CROP - 1
@@ -133,7 +144,7 @@ def __CROPCO7():
         # IEFC is 0 when JDAY <= JDYEFC
         # However, KC is finally clamped (for every condition) to the KCL~KCU range.
         # Bug or desired behaviour ?
-        if IPCT > 0 and IPCT < 10:
+        if 0 < IPCT < 10:
             if IPCT == 2 and PCT < 0.1:
                 SIM.KC = CC[CROP][IEFC][0] + mod * (CC[CROP][IEFC][1]-CC[CROP][IEFC][0])
             else:
@@ -146,12 +157,16 @@ def __CROPCO7():
             else:
                 print("WARNING: KC is not being assigned.")
 
-    if CROP == 7 and SIM.JDAY >= SIM.JFPLT > 0: SIM.KC = 0.25
+    if CROP == 7 and SIM.JDAY >= SIM.JFPLT > 0:
+        SIM.KC = 0.25
+
+    SIM.IEFC = IEFC
 
     # The original code performs a redundant range clamping here,
     # since it is perfomed anyway at the end of CROPCO for all cases.
-    #if SIM.KC > SIM.BLOC.KCU[ICROP]: SIM.KC = SIM.BLOC.KCU[ICROP]
-    #if SIM.KC < KCL[ICROP]: SIM.KC = KCL[ICROP]
+    # if SIM.KC > SIM.BLOC.KCU[ICROP]: SIM.KC = SIM.BLOC.KCU[ICROP]
+    # if SIM.KC < KCL[ICROP]: SIM.KC = KCL[ICROP]
+
 
 def __CROPCO8():
     """Compute Daily Crop Coefficient for Corn.
@@ -167,16 +182,19 @@ def __CROPCO8():
         SIM.KC = 0.15 + 0.85 * (GDD-0.12*GDDMAT) / (0.3*GDDMAT)
     elif GDD > 0.78 * GDDMAT:
         SIM.KC = 1.0 - 0.7 * (GDD-0.78*GDDMAT) / (0.22*GDDMAT)
-    elif GDD > GDDMAT: SIM.KC = 0.15
+    elif GDD > GDDMAT:
+        SIM.KC = 0.15
 
     # Range adjustment.
     # TONOTE: The following instructions could be written as:
     # SIM.KC = min(SIM.BLOC.KCU[SIM.Sim.CROP-1], max(0.15, SIM.KC))
     # using V = min(MAX, max(MIN, V)) makes the code more readable
     # but slower (~2X) than IF-checking, which is your preference?
-    #if SIM.KC > SIM.BLOC.KCU[SIM.Sim.CROP-1]:
+    # if SIM.KC > SIM.BLOC.KCU[SIM.Sim.CROP-1]:
     #    SIM.KC = SIM.BLOC.KCU[SIM.Sim.CROP-1]
-    if SIM.KC < 0.15: SIM.KC = 0.15
+    if SIM.KC < 0.15:
+        SIM.KC = 0.15
+
 
 def __CROPCO10():
     """Compute crop coefficients for alfalfa. Kc from Wright (1982)"""
@@ -227,6 +245,7 @@ def __CROPCO10():
         elif 0 < IPCT < 10:
             SIM.KC = CC[CROP][IEFC][IPCT-1] + mod * (CC[CROP][IEFC][IPCT] - CC[CROP][IEFC][IPCT-1])
 
+
 def GetCuttingIndices():
     """Gets IEFC and ICUT for Alfalfa coefficients."""
 
@@ -248,7 +267,8 @@ def __CROPCO11():
 
     GDDMAT = SIM.Sim.GDD.MAT
     JDYCUT = SIM.Sim.JDYCUT[0]
-    if SIM.JDAY == JDYCUT: SIM.GDDCUT = SIM.GDD
+    if SIM.JDAY == JDYCUT:
+        SIM.GDDCUT = SIM.GDD
 
     FGS = SIM.GDD / GDDMAT if SIM.JDAY < JDYCUT else \
         (SIM.GDD-SIM.GDDCUT) / (GDDMAT-SIM.GDDCUT)
