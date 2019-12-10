@@ -3,6 +3,7 @@
 from aenum import IntEnum
 from HelperIO import ReadNextInteger, ReadNextFloat, ReadNextSequenceAsFloats, ReadFloats
 
+
 class IrrigationTypes(IntEnum):
     """Irrigation type, IRRTYP"""
     Undefined = 0
@@ -15,6 +16,7 @@ class IrrigationTypes(IntEnum):
     def isIrrigated(self):
         """Return True if the irrigation type is other than DryLand (> 1)."""
         return self > 1
+
 
 class IrrigationSchedulingMethods(IntEnum):
     """Irrigation scheduling methods, IRRSCH"""
@@ -32,10 +34,11 @@ class IrrigationSchedulingMethods(IntEnum):
     SimulationForKnownFutureWeatherForNOAAProject = 4
     """Simulation for known future weather for NOAA project"""
 
+
 class IrrigationData:
     """Irrigation data from a .SIM file."""
-    __slots = ("IRRTYP", "PAD", "RAINAL", "SYSCAP", "IPER", \
-        "APMIN", "APMAX", "SMALLI", "GSTART", "GSTOP", "IRRSCH", "JFIRST")
+    __slots__ = ("IRRTYP", "PAD", "RAINAL", "SYSCAP", "IPER",
+                 "APMIN", "APMAX", "SMALLI", "GSTART", "GSTOP", "IRRSCH", "JFIRST")
 
     def __init__(self, file):
         self.IRRTYP = IrrigationTypes(ReadNextInteger(file))

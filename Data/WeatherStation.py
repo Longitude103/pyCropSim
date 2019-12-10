@@ -1,13 +1,14 @@
 """Weather Station module."""
 
+
 class WeatherStation:
     """Represents a Weather Station."""
 
-    __slots_ = ("LOCATE", "IMSTR", "IDSTR", "NDAYS", "LAT", "LONG", "ELEV")
+    __slots__ = ("LOCATE", "IMSTR", "IDSTR", "NDAYS", "LAT", "LONG", "ELEV")
 
-    def __init__(self, locate: str, \
-        imstr: int, idstr: int, ndays: int, \
-        lat: float, long: float, elev: float):
+    def __init__(self, locate: str,
+                 imstr: int, idstr: int, ndays: int,
+                 lat: float, long: float, elev: float):
         """Initialize the Weather station class."""
         self.LOCATE = locate
         self.IMSTR = imstr

@@ -116,51 +116,37 @@ def __CROPCO7():
     """Compute Daily Crop Coefficient for Spring Grains, Edible Beans, Soybeans,
     Potatoes, Sugar Beets, Grain Sorghum (Milo) and Winter Wheat."""
 
-    # TONOTE: Fully revised method.
+    CROP = SIM.Sim.CROP
+    if CROP == 7 and SIM.JDAY >= SIM.JFPLT > 0:
+        return 0.25
+
     # Adjusted code for 0-base indexing
-    # TONOTE: I changed the IF comparing workflow for optimization.
-    IEFC, PCT = SIM.IEFC, 0.0
+    IEFC, PCT = 0, 0.0
     # IEFC: Index to growing stage.
     if SIM.JDAY > SIM.JDYEFC:
         IEFC = 1
-        PCT = float(SIM.JDAY - SIM.JDYEFC) / 100.0
+        PCT = float(SIM.JDAY-SIM.JDYEFC)/100.0
     else:
-        IEFC = 0
-        PCT = float(SIM.JDAY - SIM.JDYPLT) / float(SIM.JDYEFC - SIM.JDYPLT)
+        PCT = float(SIM.JDAY-SIM.JDYPLT)/float(SIM.JDYEFC-SIM.JDYPLT)
 
-    CROP = SIM.Sim.CROP
     ICROP = SIM.Sim.CROP - 1
-    CC = SIM.BLOC.CC
     KCL = SIM.BLOC.KCL
     # TONOTE: Conditional branching changed for readability and performace,
-    # Now it requires less comparisions saving CPU instructions.
+    # Now it requires less comparisons saving CPU instructions.
     # TONOTE: Here, the lower limit is also assigned for PCT > 1.0
     if PCT < 0.0 or PCT > 1.0:
-        SIM.KC = KCL[ICROP]
+        return KCL[ICROP]
     else:
+        CC = SIM.BLOC.CC
         IPCT = INT(PCT / 0.1)
         mod = 10.0 * (PCT % 0.1)
-        # TONOTE: When IPCT == 0 and IEFC != 0, KC is never assigned.
-        # IEFC is 0 when JDAY <= JDYEFC
-        # However, KC is finally clamped (for every condition) to the KCL~KCU range.
-        # Bug or desired behaviour ?
-        if 0 < IPCT < 10:
-            if IPCT == 2 and PCT < 0.1:
-                SIM.KC = CC[CROP][IEFC][0] + mod * (CC[CROP][IEFC][1]-CC[CROP][IEFC][0])
-            else:
-                SIM.KC = CC[CROP][IEFC][IPCT-1] + mod*(CC[CROP][IEFC][IPCT]-CC[CROP][IEFC][IPCT-1])
-        elif IPCT == 10:
-            SIM.KC = CC[CROP][IEFC][9]
-        elif IPCT == 0:
-            if IEFC == 0:
-                SIM.KC = KCL[ICROP] + mod * (CC[CROP][IEFC][0]-KCL[ICROP])
-            else:
-                print("WARNING: KC is not being assigned.")
-
-    if CROP == 7 and SIM.JDAY >= SIM.JFPLT > 0:
-        SIM.KC = 0.25
-
-    SIM.IEFC = IEFC
+        if IPCT == 0:
+            return KCL[ICROP] + mod * (CC[CROP][IEFC][0]-KCL[ICROP]) if IEFC == 0 else \
+                CC[CROP][IEFC][0] + mod * (CC[CROP][IEFC][1]-CC[CROP][IEFC][0])
+        elif IPCT < 10:
+            return CC[CROP][IEFC][IPCT-1] + mod*(CC[CROP][IEFC][IPCT]-CC[CROP][IEFC][IPCT-1])
+        else: # if IPCT == 10: IPCT cannot have other value here.
+            return CC[CROP][IEFC][9]
 
     # The original code performs a redundant range clamping here,
     # since it is perfomed anyway at the end of CROPCO for all cases.
