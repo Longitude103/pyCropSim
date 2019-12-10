@@ -69,7 +69,7 @@ def CROPCO():
     # Which do you prefer ?
     CROP = SIM.Sim.CROP
     if CROP <= 7:
-        __CROPCO7()
+        SIM.KC = __CROPCO7()
     elif CROP == CropId.Corn:
         __CROPCO8()
     elif CROP == CropId.Alfalfa:
