@@ -60,7 +60,8 @@ class Configuration:
             self.PrintUsage()
 
         # if there's a "default.cfg" file present in the working directory, load it as defaults
-        if os.path.isfile(DefaultConfigPath): self.__read_config_file__(DefaultConfigPath)
+        if os.path.isfile(DefaultConfigPath):
+            self.__read_config_file__(DefaultConfigPath)
 
         for arg, value in args:
             if arg in ("-h", "--help"):
