@@ -32,7 +32,7 @@ def ReadNextNumberSequence(file, includeText=False):
             return ret
         if c.isalpha():
             text = c + file.readline().strip()
-            #print(text)
+            # print(text)
             if includeText:
                 ret.append(text)
             return ret
@@ -55,7 +55,7 @@ def ReadNextSequenceAsInteger(file, delimiters=(" ", "\r", "\n", "\t")):
             return ret
         if c.isalpha():
             file.readline()
-            #print(c + file.readline().strip())
+            # print(c + file.readline().strip())
             return ret
         if c in delimiters:
             if len(buffer) > 0:
@@ -94,7 +94,7 @@ def ReadNextSequenceAsFloats(file):
             return ret
         if c.isalpha():
             file.readline()
-            #print(c + file.readline().strip())
+            # print(c + file.readline().strip())
             return ret
         if c in (" ", "\r", "\n"):
             if len(buffer) > 0:
@@ -177,7 +177,7 @@ def SkipLines(file, count):
         temp = file.readline()
     else:
         temp = file.readline(count)
-    #print("Skipped: " + temp)
+    # print("Skipped: " + temp)
     return temp.strip()
 
 

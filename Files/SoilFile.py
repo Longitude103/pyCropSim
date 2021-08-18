@@ -2,12 +2,13 @@
 
 from Data.SoilData import SoilData
 
+
 class SoilFile:
     """
     Represents the data in the soil file (SOILFILE).
     Which indicates the soil types that must be simulated per site.
     """
-    
+
     Data = {}
 
     def __init__(self, filename):

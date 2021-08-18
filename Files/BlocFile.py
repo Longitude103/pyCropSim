@@ -12,9 +12,9 @@ from Data.Crop import CropId
 class BlocFile:
     """Represents the data in the bloc file (BLOCFILE.DAT)"""
 
-    __slots__ = ("ETRFACT", "NFDAY", "YTREND", "DEPTH", "YDENS", "RESRAT", "SPGRAV", "FRAGIL", \
-        "RESTYP", "KCL", "KCU", "TBASE", "TCEIL", "SFTMP", "SMFMX", "SMFMN", "SNOCOVMX", \
-        "SNOCOV1", "SNOCOV2", "TIMP", "CN", "CNFALLOW", "CC")
+    __slots__ = ("ETRFACT", "NFDAY", "YTREND", "DEPTH", "YDENS", "RESRAT", "SPGRAV", "FRAGIL",
+                 "RESTYP", "KCL", "KCU", "TBASE", "TCEIL", "SFTMP", "SMFMX", "SMFMN", "SNOCOVMX",
+                 "SNOCOV1", "SNOCOV2", "TIMP", "CN", "CNFALLOW", "CC")
 
     def __init__(self, filename):
         print("Reading BLOC file at: " + filename)
@@ -48,8 +48,8 @@ class BlocFile:
             self.CC[CropId(i + 1)] = (ReadNextSequenceAsFloats(file), ReadFloats(file, 10))
 
         # Read Alfalfa Crop Coefficients
-        self.CC[CropId.Alfalfa] = (ReadNextSequenceAsFloats(file), ReadFloats(file, 10), \
-            ReadFloats(file, 10))
+        self.CC[CropId.Alfalfa] = (ReadNextSequenceAsFloats(file), ReadFloats(file, 10),
+                                   ReadFloats(file, 10))
 
         self.KCL = ReadNextSequenceAsFloats(file)
         """Lower limit for crop coefficients."""

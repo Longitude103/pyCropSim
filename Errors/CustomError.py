@@ -1,10 +1,13 @@
 """Application defined exceptions."""
 
+
 class CropSimError(Exception):
     """An application specific error."""
 
+
 class ConvergenceError(CropSimError):
     """A Convergence error."""
+
 
 class TransLoopConvergenceError(ConvergenceError):
     """A Convergence error ocurring in the transpiration loop."""
@@ -21,6 +24,7 @@ class TransLoopConvergenceError(ConvergenceError):
     def __str__(self):
         return f"Convergence error in trans loop, Day={self.JDAY} Trans={self.TRANS:.2f}"
 
+
 class WeatherStationNotFound(CropSimError):
     """Raises when a weather station in not found in the dataset."""
 
@@ -32,6 +36,7 @@ class WeatherStationNotFound(CropSimError):
 
     def __str__(self):
         return f"Weather station {self.Station} not found in the dataset."
+
 
 class SoilNotFound(CropSimError):
     """Raises when a soil type in not found in the dataset."""

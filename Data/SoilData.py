@@ -2,6 +2,7 @@
 
 from Files.SoilPropFile import SOILTYP
 
+
 class SoilData:
     """Represents one data row from the SOILFILE."""
 

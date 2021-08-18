@@ -2,9 +2,11 @@
 
 from Files.DataFile import DataRow
 
+
 class WeeklyData(DataRow):
     """Data stored weekly"""
     __slots__ = ("ET", "ER", "ETR", "IRN", "IRG", "RA")
+
     # In the Fortran code, these variables have the WK suffix, like ETRWK, ETWK, ...
 
     def __init__(self):
@@ -64,8 +66,9 @@ class WeeklyData(DataRow):
     def __eq__(self, other):
         if isinstance(other, WeeklyData):
             return self.RA == other.RA and self.ET == other.ET \
-                and self.ER == other.ER and self.ETR == other.ETR and self.IRN == self.IRN
+                   and self.ER == other.ER and self.ETR == other.ETR and self.IRN == self.IRN
         return super().__eq__(other)
+
 
 class MonthlyData(WeeklyData):
     """Data stored monthly, it inherits the weekly data too."""
@@ -118,7 +121,7 @@ class MonthlyData(WeeklyData):
 
     def toMonthlyOutput(self, index):
         """Returns the string corresponding to the monthly report."""
-        return (f"{' '*10}{index:>5}{self.ETR:>6.1f}{self.E:>6.1f}{self.T:>6.1f}{self.ET:>6.1f}"
+        return (f"{' ' * 10}{index:>5}{self.ETR:>6.1f}{self.E:>6.1f}{self.T:>6.1f}{self.ET:>6.1f}"
                 f"{self.RA:>6.1f}{self.ER:>6.1f}{self.RON:>6.1f}  {self.IRG:>8.1f}{self.IRN:>8.1f}"
                 f"      {self.NUMIRR:>2}{self.INF:>8.1f}{self.DRA:>8.1f}{self.DPL:>8.1f}\n")
 

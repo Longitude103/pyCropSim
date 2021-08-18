@@ -2,11 +2,13 @@
 
 from aenum import IntEnum
 
+
 class ResidueType(IntEnum):
     """The type of residue, fragile (2) or not (1),
    this is used as and index to the tillage factors."""
     NonFragile = 1
     Fragile = 2
+
 
 class TillageFlags(IntEnum):
     """Tillage flags."""
@@ -15,12 +17,14 @@ class TillageFlags(IntEnum):
     Conserv = 2
     Continuous = 3
 
+
 class TillageTiming(IntEnum):
     """Tillage timing."""
     Undefined = 0
     PreplantOperation = 1
     DuringGrowingSeason = 2
     AfterHarvest = 3
+
 
 class TillageOperation:
     """Tillage operation."""
@@ -35,14 +39,14 @@ class TillageOperation:
         self.TILCOD = code
         """Tillage code."""
 
+
 class Tillage:
     """Tillage is the agricultural preparation of soil by mechanical
     agitation of various types, such as digging, stirring, and overturning."""
 
     __slots__ = ("ITC", "TILFAC", "TILTYP")
 
-    def __init__(self, index: int, non_fragile_residue_factor: float, \
-       fragile_residue_factor: float, description: str):
+    def __init__(self, index: int, non_fragile_residue_factor: float, fragile_residue_factor: float, description: str):
         self.ITC = index
         """Index of the tillage method in the tillage file."""
         self.TILFAC = (non_fragile_residue_factor / 100.0, fragile_residue_factor / 100.0)

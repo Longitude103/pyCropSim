@@ -1,5 +1,6 @@
 """GDD (Growing Degree Days) module."""
 
+
 class GddData:
     """Represents the Growing Degree Days related data."""
     __slots__ = ("VEG", "FLO", "RIPE", "YFORM", "EFC", "MAT")

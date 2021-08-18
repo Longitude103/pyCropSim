@@ -2,6 +2,7 @@
 
 from aenum import IntEnum
 
+
 class DepthToGroundwaterFlag(IntEnum):
     """Depth to groundwater flags."""
     LessThanSixFeet = 1
@@ -11,13 +12,13 @@ class DepthToGroundwaterFlag(IntEnum):
 class SoilType:
     """Represents a type of soil."""
 
-    #TONOTE: DRCOE & DRNDAY are not read from the file,
+    # TONOTE: DRCOE & DRNDAY are not read from the file,
     # but overriden by constants in the code instead DRCOE=DCOFSOIL,DRNDAY=DDAYSOIL
     # Probably values on the file yields more accurate simulation results.
 
     # 2, 4, 9, 15, 21, 30, 42, 54, 66, 78
-    __slots__ = ("ISCODE", "BULKD", "ORGM", "FIELDC", "PWP", "AIRDRY", "DRNCOE", "DRNDAY",\
-        "AvailableWaterHoldingCapacity", "HydrologicGroup", "DepthToGroundwaterIndicator", "Index")
+    __slots__ = ("ISCODE", "BULKD", "ORGM", "FIELDC", "PWP", "AIRDRY", "DRNCOE", "DRNDAY",
+                 "AvailableWaterHoldingCapacity", "HydrologicGroup", "DepthToGroundwaterIndicator", "Index")
 
     def __init__(self, line):
 

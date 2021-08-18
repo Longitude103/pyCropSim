@@ -40,7 +40,7 @@ class DataRow(ABC):
                             diffs += 1
                             ret[slot] = member - other[slot]
 
-        return (diffs, ret)
+        return diffs, ret
 
     def compareOutputStr(self, line: str):
         """Compares the string representation of this row with the specified line."""

@@ -2,11 +2,8 @@
 
 import sys
 from aenum import IntEnum
-
 import SIM
-
 import Fortran
-
 from Data.Crop import CropId
 from Data.Tillage import TillageOperation
 from Data.Summary import WeeklyData, MonthlyData
@@ -156,8 +153,10 @@ def PrintWeeklySummary():
 
 class DepletionData:
     """Holds the data for depletion computing."""
-    __slots__ = ("DDINF", "DET", "DFRACT", "DIST", "DISTD", "DNETI", "DPLPER", "DRAIN", "DRNOFF", "E", "EOFF", "EPMAX", "ES", "ET", "ETOFF", "ETROFF", "ETRS", "EVEG",
-                 "EXTRA", "IPRINT", "JDYWET", "PERDEP", "RNOFF", "RUNONS", "T", "TOFF", "TP", "TRANS", "TS", "TUP", "TUSE", "TVEG", "TWAIT", "TWEIGH", "UPTAKE", "WAVAIL")
+    __slots__ = ("DDINF", "DET", "DFRACT", "DIST", "DISTD", "DNETI", "DPLPER", "DRAIN", "DRNOFF", "E", "EOFF", "EPMAX",
+                 "ES", "ET", "ETOFF", "ETROFF", "ETRS", "EVEG", "EXTRA", "IPRINT", "JDYWET", "PERDEP", "RNOFF",
+                 "RUNONS", "T", "TOFF", "TP", "TRANS", "TS", "TUP", "TUSE", "TVEG", "TWAIT", "TWEIGH", "UPTAKE",
+                 "WAVAIL")
 
     def __init__(self):
         """Initializes the values as they as required before starting the loop."""
@@ -624,7 +623,8 @@ def __TranspirationRoutine(D: DepletionData) -> ContinueTo:
     if SIM.EP > 0.0:
         D.TP *= 1.0 + D.TUP * (D.EPMAX - D.E) / D.EPMAX
 
-    if D.TP <= 0.0: return ContinueTo.Redistribution
+    if D.TP <= 0.0:
+        return ContinueTo.Redistribution
 
     SIM.DPLN, D.TWEIGH, D.WAVAIL = 0.0, 0.0, 0.0
 
@@ -783,6 +783,7 @@ def PrintMonthlySummary(D: DepletionData):
             f' {SIM.CurrentCrop.WEAFILE}  {SIM.IYEAR:>5}{SIM.SOIL:>5}{SIM.Sim.CROP:>3}'
             f"{SIM.Sim.ITFLAG:>3}{SIM.Sim.Irrigation.IRRTYP:>3}"
         ))
+
         SIM.monthFile.write("".join([
             (f"  {SIM.MON[i].ET:>7.2f}{SIM.MON[i].ER:>7.2f}{SIM.MON[i].IRN:>7.2f}"
              f"{SIM.MON[i].DRA:>7.2f}{SIM.MON[i].ROF:>7.2f}{SIM.MON[i].RA:>7.2f}")

@@ -12,6 +12,7 @@ DDAYSOILDIC = {411: 2.0, 412: 2.0, 421: 2.0, 422: 2.0, 431: 4.0, 432: 4.0, 442: 
                732: 4.0, 821: 4.0, 822: 4.0, 831: 6.0, 832: 6.0, 921: 4.0, 922: 4.0}
 """Drainage duration based on the soil type."""
 
+
 class SoilPropFile():
     """Represents a SOILPROP file."""
 

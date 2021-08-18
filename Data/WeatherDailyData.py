@@ -1,11 +1,11 @@
 """Weather daily data module."""
 
+
 class WeatherDailyData:
     """Data from a Weather Station for a single day."""
     __slots__ = ("DOY", "TMAX", "TMIN", "PRECIP", "EVAP", "ETR")
 
-    def __init__(self, doy: int, tmax: float, tmin: float,\
-       precip: float, evap: float, etrhg: float):
+    def __init__(self, doy: int, tmax: float, tmin: float, precip: float, evap: float, etrhg: float):
         self.DOY = doy
         """Day Of Year, 1-based index."""
         self.TMAX = tmax

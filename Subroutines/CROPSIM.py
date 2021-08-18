@@ -33,7 +33,7 @@ def initSimulation(sim: SimControl):
 
 def initSoilSimulation(soilKey: int, soilIndex: int):
     """Init simulation for the specified soil."""
-    
+
     SIM.SOIL = soilKey
     SIM.Soil = SIM.SoilProps[soilIndex]
     print(f"{soilIndex}\tWEATHER SITE: {SIM.Control.WSITE}\tSOIL: {soilKey}")
@@ -46,7 +46,7 @@ def initCropSimulation(crop: Crop):
     print(f"{crop.Index}\t{crop.SIMFILE}\t{crop.WEAFILE}\t{crop.YR}")
     SIM.CurrentCrop = crop
     SIM.IYEAR = crop.YR
-    
+
     # TONOTE: @765, II is the index from the crop list, simulated or skipped
     # TOASK: It doesn't makes more sense to check the live condition
     # against the index of simulated crops ?
@@ -59,13 +59,13 @@ def initCropSimulation(crop: Crop):
 
 def loadSimulationFiles():
     """Loads the .WEA and .SIM for the current simulation."""
-    
-    simFilename = os.path.join(SIM.Config.getZonePath(SIM.IZONE), \
-       f"{SIM.CurrentCrop.SIMFILE}.SIM")
-    
-#    if simFilename == SIM.LASTSIMF:
-#        reloadLastSimFile()
-#    else:
+
+    simFilename = os.path.join(SIM.Config.getZonePath(SIM.IZONE),
+                               f"{SIM.CurrentCrop.SIMFILE}.SIM")
+
+    #    if simFilename == SIM.LASTSIMF:
+    #        reloadLastSimFile()
+    #    else:
     loadSimFile(SimFile(simFilename))
 
     initSoilData()
@@ -75,7 +75,7 @@ def loadSimulationFiles():
     READWEAT(SIM.Site.NWSITE, SIM.CurrentCrop.YR)
 
     # @ 1049
-    #initTillageDays()
+    # initTillageDays()
 
     initTillageDaysWithBranches()
 
@@ -119,7 +119,7 @@ def loadSimFile(file: SimFile):
         # TONOTE: Here soilRz is a float that takes 4.11 from the soil code
         # 
         soilRz = SIM.Soil.AvailableWaterHoldingCapacity
-        rzFact = min((0.6 + 0.4*(float(soilRz) - 3.0)/4.0), 1.0)
+        rzFact = min((0.6 + 0.4 * (float(soilRz) - 3.0) / 4.0), 1.0)
         SIM.RZMAX *= rzFact
         SIM.RZMGMT *= rzFact
 
@@ -131,7 +131,7 @@ def initSoilData():
 
     # @976 
     SIM.SATWC = 1.0 - SIM.Soil.BULKD / 2.65
-    
+
     SIM.PWP = SIM.Soil.PWP[:]
     # DRNCOE & DRNDAY are found in Soil properties.
     SIM.TOTDEP, SIM.DPLBG = 0.0, 0.0
@@ -158,11 +158,10 @@ def setInitialConditions():
     """Sets the initial simulation conditions."""
 
     # Load initial data.
-    #initFile = InitialFile(os.path.join(SIM.Config.InputPath, \
-    #os.path.normpath(SIM.Config.INITFILE)))
+    # initFile = InitialFile(os.path.join(SIM.Config.InputPath, \
+    # os.path.normpath(SIM.Config.INITFILE)))
     # TODO: By now, not loading/rewriting the Initial file, 
     # using the Default at program start and using memory copy.
-    
 
     # TOASK: @985 Why not LIVECROP = LIVECOND ?
     if SIM.LIVECOND: SIM.LIVECROP = True
@@ -212,18 +211,24 @@ def initTillageDaysWithBranches():
         if SIM.Sim.CROP != 7:
             if till.ITILTM == 1:
                 till.TILDAY = SIM.JDYPLT - till.TILDAY
-            elif till.ITILTM == 2: till.TILDAY += SIM.JDYPLT
-            elif till.ITILTM == 3: till.TILDAY += SIM.JDYMAT
+            elif till.ITILTM == 2:
+                till.TILDAY += SIM.JDYPLT
+            elif till.ITILTM == 3:
+                till.TILDAY += SIM.JDYMAT
         elif not SIM.LIVECROP:
             if till.ITILTM == 1:
                 till.TILDAY = SIM.JDYPLT - till.TILDAY
-            elif till.ITILTM == 2: till.TILDAY += SIM.JDYPLT
-            elif till.ITILTM == 3: till.TILDAY += 367
+            elif till.ITILTM == 2:
+                till.TILDAY += SIM.JDYPLT
+            elif till.ITILTM == 3:
+                till.TILDAY += 367
         else:
             if till.ITILTM == 1:
                 till.TILDAY = -999 - till.TILDAY
-            elif till.ITILTM == 2: till.TILDAY = -999 + till.TILDAY
-            elif till.ITILTM == 3: till.TILDAY += SIM.JDYMAT
+            elif till.ITILTM == 2:
+                till.TILDAY = -999 + till.TILDAY
+            elif till.ITILTM == 3:
+                till.TILDAY += SIM.JDYMAT
         # TODO: Check if the values in Sim are actually changed without re-assigment
         SIM.Sim.TillageOperations[i] = till
 
@@ -236,22 +241,22 @@ def openOutputFiles():
     SIM.openPrecipFile()
     SIM.openOutFile()
     SIM.openProfileFile()
-    
+
     # Print Header for Out File
     pout = SIM.PrintOut
     if pout.IPFLAG > 1 and (pout.IPSOIL == SIM.SOIL or SIM.Config.PRINT_ALL_SOILS):
         if pout.JPRSTR <= SIM.IYEAR <= pout.JPRSTP:
             if SIM.Site.NWSITE in pout.PRSITE:
-                #WRITE(7,450)WEAFILE(II),ICROP(CROP),SOIL,SIMFILE(II),ITFLAG,IHYGRP
-                #FORMAT(1X,A12/5X,A8,5X,'SOIL CODE:',I4,5X,'CROP/IRR/TILL: ',
-                #A8,5X,'TILL CODE: ',I3,5X,'HYDRO GROUP: ', I2/159('-'))
+                # WRITE(7,450)WEAFILE(II),ICROP(CROP),SOIL,SIMFILE(II),ITFLAG,IHYGRP
+                # FORMAT(1X,A12/5X,A8,5X,'SOIL CODE:',I4,5X,'CROP/IRR/TILL: ',
+                # A8,5X,'TILL CODE: ',I3,5X,'HYDRO GROUP: ', I2/159('-'))
                 crop = SIM.CurrentCrop
                 IHYGRP = SIM.Soil.HydrologicGroup
                 SIM.outFile.write((
                     f" {crop.WEAFILE:<12}\n     {SIM.Sim.CROP.getName(SIM.Config.LEGACY):<8}"
                     f"     SOIL CODE: {SIM.SOIL:>4}     CROP/IRR/TILL: {crop.SIMFILE:<8}     "
-                    f"TILL CODE: {SIM.Sim.ITFLAG:>3}     HYDROGROUP: {IHYGRP:>2}\n{'*'*159}\n"
-                    ))
+                    f"TILL CODE: {SIM.Sim.ITFLAG:>3}     HYDROGROUP: {IHYGRP:>2}\n{'*' * 159}\n"
+                ))
 
 
 def loadInitialData():
@@ -271,7 +276,7 @@ def rewriteInitFile():
     """Rewrites the INITFILE."""
     # TODO: By now using an in-memory Initial file.
     # @1148
-    
+
     SIM.InitialData.THETA = SIM.THETA[:]
     SIM.InitialData.CROP = SIM.Sim.CROP
     SIM.InitialData.RESIDUE = SIM.RESIDUE
@@ -303,6 +308,6 @@ def calculateYield():
         # and is now dead for wheat-fallow rotations. Conversely if it started
         # the year as dead, it was planted in the fall and is now alive.
         SIM.LIVECROP = (not SIM.LIVECROP) if SIM.Sim.Irrigation.IRRTYP == 1 \
-            and SIM.Sim.ITFLAG < 3 else True
+                                             and SIM.Sim.ITFLAG < 3 else True
     else:
         SIM.LIVECROP = False

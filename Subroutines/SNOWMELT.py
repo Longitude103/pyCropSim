@@ -70,7 +70,11 @@ def SNOWMELT(JDAY: int):
             XX: float = SIM.SNOH2O / SIM.BLOC.SNOCOVMX
             SNOMLT *= XX / (XX + exp(SIM.BLOC.SNOCOV1 - SIM.BLOC.SNOCOV2 * XX))
 
-        if SNOMLT < 0: SNOMLT = 0.0
-        if SNOMLT > SIM.SNOH2O: SNOMLT = SIM.SNOH2O
+        if SNOMLT < 0:
+            SNOMLT = 0.0
+
+        if SNOMLT > SIM.SNOH2O:
+            SNOMLT = SIM.SNOH2O
+
         SIM.SNOH2O -= SNOMLT
         SIM.RAIN += SNOMLT

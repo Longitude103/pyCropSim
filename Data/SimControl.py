@@ -2,6 +2,7 @@
 
 from Files.DataFile import DataRow
 
+
 class SimControl(DataRow):
     """Defines the parameters of a simulation."""
     __slots__ = ("WSITE", "IZONE", "CLIMZONE", "YEAR1")
@@ -19,7 +20,7 @@ class SimControl(DataRow):
     def __str__(self):
         return f"{self.WSITE}\t{self.IZONE}\t{self.CLIMZONE}\t{self.YEAR1}"
 
-    def __eq__(self, other): 
+    def __eq__(self, other):
         if not isinstance(other, SimControl): return False
         return self.WSITE == other.WSITE and self.YEAR1 == other.YEAR1
 

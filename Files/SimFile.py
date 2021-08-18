@@ -14,13 +14,15 @@ from Data.Tillage import TillageFlags, TillageOperation
 from Data.Irrigation import IrrigationData
 from Data.Irrigation import IrrigationTypes
 
+
 class SimFile:
     """Represents a simulation .SIM file."""
-    __slots__ = ("CHAND", "CHANW", "CROP", "DDEPTH", "EAPP", "EREUSE", "GDD", "GDDROOT", \
-        "IDBG", "IDEND", "IDPLT", "IMBG", "IMEND", "IMPLT", "ITERRC", "ITFLAG", "IYIELD", \
-        "Irrigation", "JDFREQ", "JDYCUT", "JGOI", "JSTOPI", "LAYERS", "NCUT", "NTILLS", "PRUNOF", \
-        "RZMAX", "RZMGMT", "RZMIN", "TBREAK", "TINTRV", "TillageOperations", "YCOEFF", "YMAX", \
-        "_ITFLAG", "_RZMAX", "_RZMGMT", "_TILL")
+    __slots__ = (
+        "CHAND", "CHANW", "CROP", "DDEPTH", "EAPP", "EREUSE", "GDD", "GDDROOT", "IDBG", "IDEND", "IDPLT", "IMBG",
+        "IMEND", "IMPLT", "ITERRC", "ITFLAG", "IYIELD", "Irrigation", "JDFREQ", "JDYCUT", "JGOI", "JSTOPI", "LAYERS",
+        "NCUT", "NTILLS", "PRUNOF", "RZMAX", "RZMGMT", "RZMIN", "TBREAK", "TINTRV", "TillageOperations", "YCOEFF",
+        "YMAX", "_ITFLAG", "_RZMAX", "_RZMGMT", "_TILL")
+
     # TODO: Find the values in the .SIM files that are modified during the simulation:
     # IMPLT, IDPLT, TillageOperations[i].TILDAY
 
@@ -30,7 +32,8 @@ class SimFile:
         self.DDEPTH = 0.0
         """DELIVERY DEPTH, in inches."""
 
-        if filename is None: return
+        if filename is None:
+            return
 
         print("Reading SIMFILE file at: " + filename)
         file = open(filename, "r")
@@ -113,7 +116,7 @@ class SimFile:
         # For Alfalfa/Pasture/Hay Can Simulate An Iterruption Of Supply
         # For During The Summer When Water Is Applied To Row Crops
         if self.Irrigation.IRRSCH == 3:
-            if not (self.CROP >= 10 and self.CROP <= 13):
+            if not (10 <= self.CROP <= 13):
                 self.JSTOPI = ReadNextInteger(file)
                 self.JGOI = ReadNextInteger(file)
             self.JDFREQ = ReadNextInteger(file)

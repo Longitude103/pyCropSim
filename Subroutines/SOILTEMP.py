@@ -3,9 +3,9 @@
 
 # TONOTE: 100% REVISED
 
-#=================================================================
+# =================================================================
 # INPUT DATA
-#=================================================================
+# =================================================================
 # CROP:             The crop type
 # SOIL
 # JDAY:             Current Julian Day of the simulation.
@@ -27,14 +27,14 @@
 
 # CENTER
 # SOILT
-#=================================================================
+# =================================================================
 # STATIC==========================================================
 # KCL, KCU          Lower and Upper limits to KC
-#=================================================================
+# =================================================================
 # OUTPUT
 # TAVG
 # SOILT
-#=================================================================
+# =================================================================
 
 
 from math import log
@@ -45,12 +45,13 @@ import SIM
 TLAG: float = 0.8
 """Lag coefficient for soil temperature."""
 
+
 def SOILTEMP():
     """This method estimates daily average temperature at the bottom of each soil layer."""
 
     ROM = SIM.BLOC
     BULKD: float = SIM.Soil.BULKD
-    
+
     # DP: Maximum damping depth, in inches.
     # SWAT manual equation 2.3.6
     DP: float = 39.4 + 98.4 * (BULKD / (BULKD + 686.0 * exp(-5.63 * BULKD)))
@@ -59,7 +60,7 @@ def SOILTEMP():
     WC: float = SIM.TOTWAT / ((0.356 - (0.144 * BULKD)) * SIM.TOTDEP)
     # DD: damping depth for day, in mm.
     # SWAT manual equation 2.3.8
-    #DD: float = DP * exp(log(19.7 / DP) * ((1.0 - WC) / (1.0 + WC))**2.0)
+    # DD: float = DP * exp(log(19.7 / DP) * ((1.0 - WC) / (1.0 + WC))**2.0)
     base: float = (1.0 - WC) / (1.0 + WC)
     DD: float = DP * exp(log(19.7 / DP) * (base * base))
 
@@ -75,7 +76,7 @@ def SOILTEMP():
     CV: float = SIM.RESIDUE + AGBIO
     # BCV: lagging factor for cover
     BCV: float = 1.123 * CV / (1.123 * CV + exp(7.563 - 1.4566E-4 * CV))
-    
+
     if SIM.SNOH2O >= 0.0:
         XX: float = 1.0
         if SIM.SNOH2O <= 4.724:
@@ -88,7 +89,7 @@ def SOILTEMP():
     if SIM.SNOH2O <= 0.02:
         COV: float = exp(-5.0E-5 * 1.123 * CV)
         ALBSOIL: float = 0.30 - 0.10 * (SIM.Soil.AvailableWaterHoldingCapacity - 4.0) / 5.0
-        #ALBSOIL: float = 0.30 - 0.10 * (SIM.SOIL/100.0 - 4.0) / 5.0
+        # ALBSOIL: float = 0.30 - 0.10 * (SIM.SOIL/100.0 - 4.0) / 5.0
         ALBEDO = 0.23 * (1.0 - COV) + COV * ALBSOIL
 
     IJDAY: int = SIM.JDAY - 1
@@ -99,7 +100,6 @@ def SOILTEMP():
     SIM.TAVG = (SIM.TMAX[IJDAY] + SIM.TMIN[IJDAY]) / 2.0
     # TBARE: Temperature of bare soil surface, in °C.
     TBARE: float = SIM.TAVG + 0.5 * (SIM.TMAX[IJDAY] - SIM.TMIN[IJDAY]) * STO
-
 
     # SURFTEMP: Temperature of soil surface, in °C.
     SURFTEMP: float = TBARE
@@ -118,4 +118,4 @@ def SOILTEMP():
         # SWAT manual equation 2.3.4
         DF = ZD / (ZD + exp(-0.8669 - 2.0775 * ZD))
         # SWAT manual equation 2.3.3
-        SIM.SOILT[k] = TLAG * SIM.SOILT[k] + (1.0-TLAG)*(DF*(SIM.TANUAL-SURFTEMP)+SURFTEMP)
+        SIM.SOILT[k] = TLAG * SIM.SOILT[k] + (1.0 - TLAG) * (DF * (SIM.TANUAL - SURFTEMP) + SURFTEMP)

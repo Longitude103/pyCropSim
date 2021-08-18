@@ -43,15 +43,15 @@ class Configuration:
         self.BLOCFILE: str = "CSModel/BLOCK.DAT"
         self.TILLFILE: str = "CSModel/tillage.dat"
         self.PRTFILE: str = "CSModel/PRFILE"
-        self.CNTRFILE: str = "CSModel/WSiteInfo_ALL2013.txt"
-        self.CROPFILE: str = "Cropping2013.csv"
+        self.CNTRFILE: str = "CSModel/WSiteInfo_2020.txt"
+        self.CROPFILE: str = "Cropping2020.csv"
         self.SOILFILE: str = "CSModel/Soil/NE_allsoil.csv"
         self.INITFILE: str = "CSModel/INITIAL.dat"
         self.SOILPROPFILE: str = "CSModel/Soil/NESoils.dat"
 
         self.WEA_DIR: str = "CSModel/Wea"
-        self.ZONES: list = [1, 2, 3, 4, 5]
-        self.ZONES_DIR: str = "CSModel/Sim/98/Zone"
+        self.ZONES: list = [1, 2, 3]
+        self.ZONES_DIR: str = "CSModel/Sim/98/"
 
         print(f"Cropsim v{self.Version}")
         try:

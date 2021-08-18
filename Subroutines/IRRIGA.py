@@ -4,9 +4,9 @@
 
 # Fully revised module.
 
-#================================================================
+# ================================================================
 # INPUT
-#================================================================
+# ================================================================
 # KSTG, ICUT
 # IRR
 # NFDAY
@@ -24,20 +24,21 @@
 # CROPKC
 # PRECIP
 #
-#================================================================
+# ================================================================
 # OUTPUT
-#================================================================
+# ================================================================
 # NETIRR
 # GROIRR
 # DINF
 # IRIGNO
 # 
 # SIM.Sim.Irrigation.JFIRST
-#================================================================
+# ================================================================
 
 import SIM
 
 from Data.Irrigation import IrrigationData, IrrigationTypes
+
 
 def IRRIGA():
     """Irrigation scheduling routine."""
@@ -48,7 +49,7 @@ def IRRIGA():
     #
     # For Stress Irrigation of Alfalfa And Grass There Is Also a Period
     # Between JSTOPI And JGOI When Irrigation Is Not Allowed
-    
+
     SIM.NETIRR, SIM.GROIRR = 0.0, 0.0
 
     ISTAGE: int = SIM.ICUT if SIM.KSTG == 0 else SIM.KSTG
@@ -66,9 +67,10 @@ def IRRIGA():
     elif IRR.IRRSCH in (4, 5):
         ComputeForKnownFutureRainfall(IRR, ISTAGE, RAINSTOR, IRR.IRRSCH == 5)
 
+
 def ComputeForAllowableDepletion(IRR: IrrigationData, ISTAGE: int, RAINSTOR: float):
     """Computes the irrigation for the allowable depletion scheduling method."""
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     #   Irrigation Scheduled By Allowable Depletion
     #   Only Allow Irrigation If The Gross Irrigation Required Is Larger Than
     #   The Smallest Allowable Irrigation.  This Is The Smallest Depth That
@@ -76,9 +78,9 @@ def ComputeForAllowableDepletion(IRR: IrrigationData, ISTAGE: int, RAINSTOR: flo
     #   Irrigation With The Existing System Exceeds This Amount.
     #   The Smallest Allowable Irrigation Is The Minimum Amount That Would Be
     #   Practical With The Irrigation System Regardless Of Crop Needs.
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     if SIM.AWDPLN < SIM.DPLA or SIM.TODAY + 1.0 < SIM.JNEXTI or \
-        SIM.GDD < IRR.GSTART or SIM.GDD >= IRR.GSTOP:
+            SIM.GDD < IRR.GSTART or SIM.GDD >= IRR.GSTOP:
         return
 
     SIM.NETIRR = SIM.DPLN - RAINSTOR
@@ -87,6 +89,7 @@ def ComputeForAllowableDepletion(IRR: IrrigationData, ISTAGE: int, RAINSTOR: flo
     if __adjustIfLessThan(IRR, ISTAGE):
         # For Surface Irrigation Systems Runoff And Reuse Losses Are Considered
         __considerIrrigationLoss(IRR, ISTAGE)
+
 
 def ComputeForRotationSystems(IRR: IrrigationData, ISTAGE: int, RAINSTOR: float):
     """Computes the irrigation for a rotation system."""
@@ -100,12 +103,12 @@ def ComputeForRotationSystems(IRR: IrrigationData, ISTAGE: int, RAINSTOR: float)
         SIM.GROIRR = SIM.Sim.DDEPTH
         SIM.NETIRR = SIM.Sim.DDEPTH * SIM.Sim.EAPP[ISTAGE]
         SIM.DINF = SIM.NETIRR if IRR.IRRTYP <= 3 else \
-            SIM.GROIRR * (1.0-(1.0-SIM.Sim.EREUSE[ISTAGE])*SIM.Sim.PRUNOF[ISTAGE])
+            SIM.GROIRR * (1.0 - (1.0 - SIM.Sim.EREUSE[ISTAGE]) * SIM.Sim.PRUNOF[ISTAGE])
 
         __addIrigNo()
 
-def ComputeForKnownFutureRainfall(IRR: IrrigationData, ISTAGE: int, RAINSTOR: float, \
-    considerET: bool):
+
+def ComputeForKnownFutureRainfall(IRR: IrrigationData, ISTAGE: int, RAINSTOR: float, considerET: bool):
     """Scheduling with known future rainfall"""
     NFDAY: int = SIM.BLOC.NFDAY
     if SIM.JDAY < SIM.JNEXTI or SIM.GDD < IRR.GSTART or SIM.GDD >= IRR.GSTOP:
@@ -129,11 +132,12 @@ def ComputeForKnownFutureRainfall(IRR: IrrigationData, ISTAGE: int, RAINSTOR: fl
             SIM.NETIRR = max(0.0, SIM.DPLN - RAINSTOR)
 
     SIM.GROIRR = SIM.NETIRR / SIM.Sim.EAPP[ISTAGE]
-        
+
     __adjustIfLessThan(IRR, ISTAGE)
 
     # For Surface Irrigation Systems Runoff And Reuse Losses Are Considered
     __considerIrrigationLoss(IRR, ISTAGE)
+
 
 def __adjustIfLessThan(IRR: IrrigationData, ISTAGE: int) -> bool:
     """Returns False when GROIRR was < SMALLI, so irrigation loss 
@@ -148,6 +152,7 @@ def __adjustIfLessThan(IRR: IrrigationData, ISTAGE: int) -> bool:
     SIM.NETIRR = SIM.GROIRR * SIM.Sim.EAPP[ISTAGE]
     return True
 
+
 def __considerIrrigationLoss(IRR: IrrigationData, ISTAGE: int):
     # For Surface Irrigation Systems Runoff And Reuse Losses Are Considered
 
@@ -158,6 +163,7 @@ def __considerIrrigationLoss(IRR: IrrigationData, ISTAGE: int):
     SIM.JNEXTI = max(SIM.TODAY, SIM.JNEXTI) + CYCLET
 
     __addIrigNo()
+
 
 def __addIrigNo():
     """Advances the IRIGNO global variable."""

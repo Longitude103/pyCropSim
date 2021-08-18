@@ -2,6 +2,7 @@
 
 IDAYS = (0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334)
 
+
 def CALDAY(JDAY: int):
     """Returns a tuple with IMON and IDAY being the month and day for the specified Julian Day."""
     if JDAY == 0:
@@ -14,7 +15,8 @@ def CALDAY(JDAY: int):
         if JDAY <= IDAYS[J]:
             break
         IMON += 1
-    return (IMON, JDAY - IDAYS[IMON -1])
+    return (IMON, JDAY - IDAYS[IMON - 1])
+
 
 # This function assummes IMON is in the [1,12] range
 # The IMON value must not be changed when passed to this function
@@ -28,4 +30,4 @@ def DAYOFYR(IMON: int, IDAY: int) -> int:
     if IMON > 12:
         # TODO: Check if this could happen in the code and decide to handle the error if required.
         return -1
-    return IDAY+IDAYS[IMON-1]
+    return IDAY + IDAYS[IMON - 1]
