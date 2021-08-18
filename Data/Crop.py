@@ -92,7 +92,10 @@ class CropId(IntEnum):
 
     def getName(self, legacy: bool = False) -> str:
         """Returns the crop names for compliant reports."""
-        return LegacyNames[self - 1] if legacy else OutputNames[self - 1]
+        if legacy:
+            return LegacyNames[self - 1]
+
+        return OutputNames[self - 1]
 
 
 class Crop(DataRow):
@@ -115,5 +118,6 @@ class Crop(DataRow):
         return f"{self.SIMFILE},{self.YR}"
 
     def __eq__(self, other):
-        if not isinstance(other, Crop): return False
+        if not isinstance(other, Crop):
+            return False
         return self.SIMFILE == other.SIMFILE and self.YR == other.YEAR

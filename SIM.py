@@ -416,7 +416,12 @@ def writeInitialFile(filename, newLine="\n"):
 
 def writeYearRow():
     """Writes the current year row to output YR file."""
-    cropName = Sim.CROP.getName(Config.LEGACY)
+    try:
+        cropName = Sim.CROP.getName(Config.LEGACY)
+    except AttributeError as err:
+        print("Problem with Crop Name: ", err)
+        print("Crop Number is: ", Sim.CROP)
+        exit(1)
 
     IRR = Sim.Irrigation
     line: str = None
