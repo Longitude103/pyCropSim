@@ -32,12 +32,12 @@ for sim in SIM.Simulations:
                 for crop in SIM.Crops:
                     assert crop.Index == II
                     II += 1
-                    if crop.YR < SIM.Control.YEAR1: break
+                    if crop.YR < SIM.Control.YEAR1:
+                        break
 
                     print(f"#{II} YEAR:{crop.YR}")
 
                     CROPSIM.initCropSimulation(crop)
-
                     CROPSIM.performSimulation()
 
                     # TODO: Remove this break in production, just for testing a single year run

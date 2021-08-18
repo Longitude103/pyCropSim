@@ -96,9 +96,15 @@ def DetermineGrowthStage():
     # Implements Fortran code lines (1994~2004)
     SIM.KSTG = 1
     if SIM.Sim.CROP < 12:
-        if SIM.GDD > SIM.Sim.GDD.FLO: SIM.KSTG = 2
-        if SIM.GDD > SIM.Sim.GDD.RIPE: SIM.KSTG = 3
-        if SIM.Sim.CROP.isForage(): SIM.KSTG = SIM.ICUT
+        if SIM.GDD > SIM.Sim.GDD.FLO:
+            SIM.KSTG = 2
+
+        if SIM.GDD > SIM.Sim.GDD.RIPE:
+            SIM.KSTG = 3
+
+        if SIM.Sim.CROP.isForage():
+            SIM.KSTG = SIM.ICUT
+
     elif SIM.GDD > SIM.Sim.GDD.EFC:
         SIM.KSTG = 2
 
@@ -505,8 +511,10 @@ def DEPLT():
 
         if flow == ContinueTo.Transpiration:
             flow = __TranspirationRoutine(D)
+
         if flow <= ContinueTo.DailyEvaporation:
             D.AddDailyETToSeasonalTotals()
+
         if flow <= ContinueTo.ComputeET:
             D.ComputeET()
 

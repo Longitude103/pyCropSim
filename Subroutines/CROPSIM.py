@@ -67,11 +67,8 @@ def loadSimulationFiles():
     #        reloadLastSimFile()
     #    else:
     loadSimFile(SimFile(simFilename))
-
     initSoilData()
-
     setInitialConditions()
-
     READWEAT(SIM.Site.NWSITE, SIM.CurrentCrop.YR)
 
     # @ 1049
