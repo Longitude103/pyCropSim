@@ -783,7 +783,7 @@ def PrintMonthlySummary(D: DepletionData):
             SIM.monthFile.write("\n")
     else:
         rotateWheat = SIM.Sim.CROP == 7 and not SIM.LIVECROP and \
-                      SIM.Sim.Irrigation.IRRTYP == 2 and SIM.Sim.ITFLAG != 3
+                      SIM.Sim.Irrigation.IRRTYP == 1 and SIM.Sim.ITFLAG != 3
         if rotateWheat:
             SIM.Sim.CROP = 15
 

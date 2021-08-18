@@ -56,13 +56,18 @@ Station, year, soil, crop, Tillage, Irrigation Type
 
 This is at station Sydney in year 2009 for soil 622 for crop 8 (corn) Tillage = 1, irrigation = Dryland
 
-Following the first set of columns that detail the above information are 12 sets of monthly information that provide the following:
-- ET month (in)
-- EFF Precip (in)
-- NIR (in)
-- DP (in)
-- RO (in)
-- Precip (in)
+## Soils
+Soils were greatly simplified, Soils in CropSim are:
+
+| Soil | Class No |
+| :--- | -------: |
+| Sandy Soil | 412 |
+| Table Lands Soils | 622 |
+| Valley Soils | 722 |
+
+Soil 412 is mostly in the NE part of the model in the sand hills and areas along the river, there are small amounts just north of the upper most canals. Soil 622 is mostly the table lands and and the northern part of the model. Soil 722 looks like the majority of the farmlands.
+
+Soils: Identified By A 3 Digit Code That Represents The Available Water Holding Capacity (In Quarter Of Inch/Foot), Hydrologic Group (1=a,...4=d), And Depth To Groundwater Indicator (1<6ft, 2>6ft)
 
 ## Crop Numbers
 CropSim results crop number conversion:
@@ -82,18 +87,13 @@ CropSim results crop number conversion:
 | Fallow | 15 |
 | Past | 12 |
 
-## Soils
-Soils were greatly simplified, Soils in CropSim are:
-
-| Soil | Class No |
-| :--- | -------: |
-| Sandy Soil | 412 |
-| Table Lands Soils | 622 |
-| Valley Soils | 722 |
-
-Soil 412 is mostly in the NE part of the model in the sand hills and areas along the river, there are small amounts just north of the upper most canals. Soil 622 is mostly the table lands and and the northern part of the model. Soil 722 looks like the majority of the farmlands.
-
-Soils: Identified By A 3 Digit Code That Represents The Available Water Holding Capacity (In Quarter Of Inch/Foot), Hydrologic Group (1=a,...4=d), And Depth To Groundwater Indicator (1<6ft, 2>6ft)
+## Tillage
+| Tillage | Int Value |
+| :------ | --------: |
+| Fallow  | 0 |
+| Convent | 1 |
+| Conserv | 2 |
+| Continuous | 3 |
 
 ## Irrigation Types
 Irrigation is split among types, however it appears WWUMM is only using 1 and 3.
@@ -105,3 +105,12 @@ Irrigation is split among types, however it appears WWUMM is only using 1 and 3.
 | 3 | Pivot - Sprinkler |
 | 4 | Furrow Irrigation |
 | 5 | Other |
+
+## Monthly Data
+Following the first set of columns that detail the above information are 12 sets of monthly information that provide the following (in this order):
+- ET month (in)
+- EFF Precip (in)
+- NIR (in)
+- DP (in)
+- RO (in)
+- Precip (in)
