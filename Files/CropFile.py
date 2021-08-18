@@ -17,7 +17,8 @@ class CropFile(DataFile):
 
     def getRowForLine(self, line: str):
         """Parse the line and return the corresponding row."""
-        if not line: return None
+        if not line:
+            return None
         data = line.split(",")
         return Crop(data[0], int(data[1].strip()), len(self.Rows))
 
