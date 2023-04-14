@@ -51,7 +51,7 @@ class Configuration:
 
         self.WEA_DIR: str = "CSModel/Wea"
         self.ZONES: list = [1, 2, 3]
-        self.ZONES_DIR: str = "CSModel/Sim/98/"
+        self.ZONES_DIR: str = "CSModel/Sim/98_2/"
 
         print(f"Cropsim v{self.Version}")
         try:

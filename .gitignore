@@ -3,3 +3,5 @@
 /Data/Run*
 .idea
 venv
+__pycache__
+.DS_Store
