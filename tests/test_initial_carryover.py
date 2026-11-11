@@ -56,6 +56,55 @@ class CarryoverTest(unittest.TestCase):
         self.assertEqual(SIM.InitialData.THETA[0], 0.999)
 
 
+class PerSoilStateTest(unittest.TestCase):
+    """Each soil at each site starts from INITFILE, not the previous soil's end state."""
+
+    def setUp(self):
+        self._saved = {k: getattr(SIM, k) for k in (
+            "BaseInitialData", "InitialData", "Sim", "THETA", "RESIDUE", "LIVECROP",
+            "SNOTMP", "SNOH2O", "SOILT", "SOIL", "Soil", "SoilProps", "Control", "Config")}
+        SIM.BaseInitialData = InitialFile()
+        SIM.InitialData = SIM.BaseInitialData.copy()
+        SIM.Sim = types.SimpleNamespace(CROP=CropId(1))
+        SIM.SoilProps = [types.SimpleNamespace(), types.SimpleNamespace()]
+        SIM.Control = types.SimpleNamespace(WSITE="SITE1")
+
+    def tearDown(self):
+        for k, v in self._saved.items():
+            setattr(SIM, k, v)
+
+    def _simulate_year(self, theta0):
+        CROPSIM.loadInitialData()
+        SIM.THETA[0] = theta0
+        CROPSIM.rewriteInitFile()
+
+    def test_new_soil_starts_from_initfile_state(self):
+        base_theta = SIM.BaseInitialData.THETA[:]
+        CROPSIM.initSoilSimulation(411, 0)
+        self._simulate_year(0.401)
+        self._simulate_year(0.402)
+        self.assertEqual(SIM.InitialData.THETA[0], 0.402)  # carried within the soil
+
+        CROPSIM.initSoilSimulation(412, 1)
+        CROPSIM.loadInitialData()
+        self.assertEqual(SIM.THETA, base_theta)  # nothing leaked from soil 411
+        self.assertEqual(SIM.BaseInitialData.THETA, base_theta)  # baseline untouched
+
+    def test_soil_end_state_is_written_per_site_and_soil(self):
+        CROPSIM.initSoilSimulation(411, 0)
+        self._simulate_year(0.405)
+        with tempfile.TemporaryDirectory() as tmp:
+            SIM.Config = types.SimpleNamespace(OUTDIR=tmp)
+            CROPSIM.saveSoilEndState()
+            read = InitialFile(os.path.join(tmp, "Initial", "SITE1_411_INITIAL.DAT"))
+        self.assertEqual(read.THETA[0], 0.405)
+        self.assertIsInstance(read.CROP, CropId)
+
+    def test_missing_initfile_falls_back_to_defaults(self):
+        data = InitialFile.fromFileOrDefaults(os.path.join(tempfile.gettempdir(), "nope", "INITIAL.dat"))
+        self.assertEqual(data.THETA, InitialFile().THETA)
+
+
 class InitialFileFormatTest(unittest.TestCase):
     """INITIAL.DAT must round-trip in the original CROPSIM layout."""
 

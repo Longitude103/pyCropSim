@@ -1,5 +1,7 @@
 """Initial file module."""
 
+import os
+
 from Data.Crop import CropId
 
 from HelperIO import ReadFloats
@@ -34,7 +36,7 @@ class InitialFile:
             file = open(filename, "r")
 
             self.THETA = ReadFloats(file, 10)
-            self.CROP = ReadNextInteger(file)
+            self.CROP = CropId(ReadNextInteger(file))
             self.RESIDUE = ReadNextFloat(file)
 
             self.LIVECROP = ReadNextInteger(file) == 1
@@ -43,6 +45,26 @@ class InitialFile:
             self.SOILT = ReadFloats(file, 10)
 
             file.close()
+
+    @classmethod
+    def fromFileOrDefaults(cls, filename: str):
+        """Reads filename if it exists, otherwise returns the built-in defaults."""
+        if filename and os.path.isfile(filename):
+            return cls(filename)
+        print(f"INITFILE not found at: {filename}, using default initial conditions.")
+        return cls()
+
+    def copy(self):
+        """Returns an independent copy of this initial state."""
+        other = InitialFile()
+        other.THETA = self.THETA[:]
+        other.CROP = self.CROP
+        other.RESIDUE = self.RESIDUE
+        other.LIVECROP = self.LIVECROP
+        other.SNOTMP = self.SNOTMP
+        other.SNOH2O = self.SNOH2O
+        other.SOILT = self.SOILT[:]
+        return other
 
     def saveToFile(self, filename):
         """Saves the current data to a file specified by filename.

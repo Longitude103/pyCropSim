@@ -30,8 +30,11 @@ __SOILSIM_COUNT: int = 28
 
 Config = None
 """Program configuration"""
+BaseInitialData: InitialFile = None
+"""Starting state read once from the INITIAL.DAT file (INITFILE). Every soil
+of every weather site starts from a copy of it, so state never leaks between them."""
 InitialData: InitialFile = None
-"""Initial Data read from the INITIAL.DAT file."""
+"""Carryover state for the soil being simulated: the previous year's ending state."""
 
 Sites = {}
 """A dictionary with the site simulation data."""
