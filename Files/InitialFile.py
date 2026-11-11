@@ -45,11 +45,13 @@ class InitialFile:
             file.close()
 
     def saveToFile(self, filename):
-        """Saves the current data to a file specified by filename."""
+        """Saves the current data to a file specified by filename.
+
+        Uses the CROPSIM_V8.0 layout (FORMAT 476/477/478) so the file can be read back."""
         file = open(filename, "wt")
-        theta = "".join(["{:>6.3f}".format(self.THETA[i]) for i in range(10)])
+        theta = "".join(["  {:>6.3f}".format(self.THETA[i]) for i in range(10)])
         soilt = "".join(["  {:>5.1f}".format(self.SOILT[i]) for i in range(10)])
         file.write((
-            f"  {theta}\n  {int(self.CROP):>4}  {self.RESIDUE:>9.1f}  {int(self.LIVECROP):>4}\n"
+            f"{theta}\n  {int(self.CROP):>4}  {self.RESIDUE:>9.1f}  {int(self.LIVECROP):>4}\n"
             f"  {self.SNOTMP:>8.1f}    {self.SNOH2O:>6.2f}    {soilt}\n"))
         file.close()
