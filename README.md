@@ -14,6 +14,10 @@ For venv please refer to the following documentation [here](https://docs.python.
 
 Use the requirements file to ensure that all of the packages are either installed in venv or your global python library with `pip install -r requirements.txt`
 
+### Tests
+
+Run the unit tests from the repository root with `python -m unittest discover -s tests -t .`
+
 ### Bugs
 
 Please report bugs in the issues section of the repository for consideration and fixes. Please make a pull request for your updates.
@@ -52,6 +56,8 @@ There were originally three files that are used for the control the program exec
 - Wsiteinfo.DAT
 - Block.DAT
 - Initial.DAT
+
+Initial.DAT (`INITFILE` in default.cfg) holds the starting soil moisture, residue, snow and soil temperature. It is read once at startup; if it is missing, built-in defaults are used. Each soil at each weather site starts from these conditions and carries its own state from year to year, so state never passes from one soil or site to the next (the original Fortran passed the last soil's ending state on to the next soil). After a soil's last year, its ending state is written to `Initial/<site>_<soil>_INITIAL.DAT` in the output folder.
 
 We consolidated several of those files into a more friendly format in the default.cfg file that is used to set several of the variables for the input / output file paths and the other variables that are used to control the application.
 

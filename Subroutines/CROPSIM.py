@@ -36,7 +36,18 @@ def initSoilSimulation(soilKey: int, soilIndex: int):
 
     SIM.SOIL = soilKey
     SIM.Soil = SIM.SoilProps[soilIndex]
+    # Each soil at each weather site carries its own state from year to year,
+    # starting from the INITFILE conditions rather than the previous soil's end state.
+    SIM.InitialData = SIM.BaseInitialData.copy()
     print(f"{soilIndex}\tWEATHER SITE: {SIM.Control.WSITE}\tSOIL: {soilKey}")
+
+
+def saveSoilEndState():
+    """Writes the current soil's ending carryover state to Initial/<site>_<soil>_INITIAL.DAT
+    in the output folder, so a later run can start from it."""
+    folder = os.path.join(SIM.Config.OUTDIR, "Initial")
+    os.makedirs(folder, exist_ok=True)
+    SIM.InitialData.saveToFile(os.path.join(folder, f"{SIM.Control.WSITE}_{SIM.SOIL}_INITIAL.DAT"))
 
 
 def initCropSimulation(crop: Crop):
@@ -154,11 +165,7 @@ def initSoilData():
 def setInitialConditions():
     """Sets the initial simulation conditions."""
 
-    # Load initial data.
-    # initFile = InitialFile(os.path.join(SIM.Config.InputPath, \
-    # os.path.normpath(SIM.Config.INITFILE)))
-    # TODO: By now, not loading/rewriting the Initial file, 
-    # using the Default at program start and using memory copy.
+    # Initial data comes from SIM.InitialData (see initSoilSimulation and rewriteInitFile).
 
     # TOASK: @985 Why not LIVECROP = LIVECOND ?
     if SIM.LIVECOND: SIM.LIVECROP = True
@@ -270,9 +277,8 @@ def loadInitialData():
 
 
 def rewriteInitFile():
-    """Rewrites the INITFILE."""
-    # TODO: By now using an in-memory Initial file.
-    # @1148
+    """Stores this year's ending state as next year's starting state (Fortran @1148).
+    Kept in memory per soil; saveSoilEndState() writes it out after the soil's last year."""
 
     SIM.InitialData.THETA = SIM.THETA[:]
     SIM.InitialData.CROP = SIM.Sim.CROP

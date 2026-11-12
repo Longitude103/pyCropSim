@@ -42,6 +42,8 @@ for sim in SIM.Simulations:
 
                     # TODO: Remove this break in production, just for testing a single year run
                     # if SIM.Config.SINGLE_RUN: break
+
+                CROPSIM.saveSoilEndState()
             except CropSimError as err:
                 print(err)
                 sys.exit()

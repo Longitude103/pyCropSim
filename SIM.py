@@ -30,8 +30,11 @@ __SOILSIM_COUNT: int = 28
 
 Config = None
 """Program configuration"""
+BaseInitialData: InitialFile = None
+"""Starting state read once from the INITIAL.DAT file (INITFILE). Every soil
+of every weather site starts from a copy of it, so state never leaks between them."""
 InitialData: InitialFile = None
-"""Initial Data read from the INITIAL.DAT file."""
+"""Carryover state for the soil being simulated: the previous year's ending state."""
 
 Sites = {}
 """A dictionary with the site simulation data."""
@@ -396,22 +399,17 @@ def closeFiles():
         profileFile = None
 
 
-def writeInitialFile(filename, newLine="\n"):
-    """Writes the data in the structure to the file specified."""
-    file = open(filename, "wt")
-
-    file.write("  ")
-    for _, theta in enumerate(THETA):
-        file.write(f"{theta}:4.3f")
-    file.write(newLine)
-
-    file.write(f"  {int(Sim.CROP):4}  {RESIDUE:7.1f}  {int(LIVECROP):4}{newLine}")
-    file.write(f"  {SNOTMP:8.1f}    {SNOH2O:6.2f}    ")
-    for _, soilt in enumerate(SOILT):
-        file.write(f"{soilt}:5.1f")
-    file.write(newLine)
-
-    file.close()
+def writeInitialFile(filename):
+    """Writes the current carryover state to an INITIAL.DAT file at filename."""
+    data = InitialFile()
+    data.THETA = THETA[:]
+    data.CROP = Sim.CROP
+    data.RESIDUE = RESIDUE
+    data.LIVECROP = LIVECROP
+    data.SNOTMP = SNOTMP
+    data.SNOH2O = SNOH2O
+    data.SOILT = SOILT[:]
+    data.saveToFile(filename)
 
 
 def writeYearRow():

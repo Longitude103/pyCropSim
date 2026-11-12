@@ -1,5 +1,7 @@
 """Initial file module."""
 
+import os
+
 from Data.Crop import CropId
 
 from HelperIO import ReadFloats
@@ -34,7 +36,7 @@ class InitialFile:
             file = open(filename, "r")
 
             self.THETA = ReadFloats(file, 10)
-            self.CROP = ReadNextInteger(file)
+            self.CROP = CropId(ReadNextInteger(file))
             self.RESIDUE = ReadNextFloat(file)
 
             self.LIVECROP = ReadNextInteger(file) == 1
@@ -44,12 +46,34 @@ class InitialFile:
 
             file.close()
 
+    @classmethod
+    def fromFileOrDefaults(cls, filename: str):
+        """Reads filename if it exists, otherwise returns the built-in defaults."""
+        if filename and os.path.isfile(filename):
+            return cls(filename)
+        print(f"INITFILE not found at: {filename}, using default initial conditions.")
+        return cls()
+
+    def copy(self):
+        """Returns an independent copy of this initial state."""
+        other = InitialFile()
+        other.THETA = self.THETA[:]
+        other.CROP = self.CROP
+        other.RESIDUE = self.RESIDUE
+        other.LIVECROP = self.LIVECROP
+        other.SNOTMP = self.SNOTMP
+        other.SNOH2O = self.SNOH2O
+        other.SOILT = self.SOILT[:]
+        return other
+
     def saveToFile(self, filename):
-        """Saves the current data to a file specified by filename."""
+        """Saves the current data to a file specified by filename.
+
+        Uses the CROPSIM_V8.0 layout (FORMAT 476/477/478) so the file can be read back."""
         file = open(filename, "wt")
-        theta = "".join(["{:>6.3f}".format(self.THETA[i]) for i in range(10)])
+        theta = "".join(["  {:>6.3f}".format(self.THETA[i]) for i in range(10)])
         soilt = "".join(["  {:>5.1f}".format(self.SOILT[i]) for i in range(10)])
         file.write((
-            f"  {theta}\n  {int(self.CROP):>4}  {self.RESIDUE:>9.1f}  {int(self.LIVECROP):>4}\n"
+            f"{theta}\n  {int(self.CROP):>4}  {self.RESIDUE:>9.1f}  {int(self.LIVECROP):>4}\n"
             f"  {self.SNOTMP:>8.1f}    {self.SNOH2O:>6.2f}    {soilt}\n"))
         file.close()

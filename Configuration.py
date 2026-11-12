@@ -137,9 +137,9 @@ class Configuration:
     def __readGlobalData__(self):
         """Reads global data for the simulation."""
 
-        # SIM.InitialData = InitialFile(os.path.join(self.INPUTDIR, \
-        # os.path.normpath(self.INITFILE)))
-        SIM.InitialData = InitialFile()
+        SIM.BaseInitialData = InitialFile.fromFileOrDefaults(
+            os.path.join(self.INPUTDIR, os.path.normpath(self.INITFILE)))
+        SIM.InitialData = SIM.BaseInitialData.copy()
         # Read BlocFile
         SIM.BLOC = BlocFile(os.path.join(self.INPUTDIR, os.path.normpath(self.BLOCFILE)))
         # Read Tillage File

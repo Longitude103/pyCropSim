@@ -74,12 +74,13 @@ def ReadFloats(file, count):
         if not c:
             # EOF End Of File
             return ret
-        if c.isdigit() or c == ".":
+        if c.isdigit() or c == "." or (c == "-" and not buffer):
             buffer += c
         else:
-            if len(buffer) > 0:
+            # A lone "-" (e.g. from a text separator) is not a number.
+            if len(buffer) > 0 and buffer != "-":
                 ret.append(float(buffer))
-                buffer = ""
+            buffer = ""
     return ret
 
 
